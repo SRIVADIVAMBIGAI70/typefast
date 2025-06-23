@@ -1,0 +1,2826 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>10FastFingers - Improve your Typing Speed</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#f8f6fc',
+                            100: '#e8e2f5',
+                            200: '#d9d0f0',
+                            300: '#c4b5e8',
+                            400: '#a695dc',
+                            500: '#6B5B95',
+                            600: '#57467B',
+                            700: '#4a3967',
+                            800: '#3d2e54',
+                            900: '#322544',
+                        },
+                        violet: {
+                            light: '#9B59B6',
+                            dark: '#8E44AD',
+                        },
+                        background: {
+                            light: '#F4F4F6',
+                            dark: '#0C0C0D',
+                        },
+                        card: {
+                            light: '#FFFFFF',
+                            dark: '#1E1E22',
+                        },
+                        text: {
+                            primary: {
+                                light: '#1A1A1A',
+                                dark: '#FFFFFF',
+                            },
+                            secondary: {
+                                light: '#707070',
+                                dark: '#FFFFFF',
+                            }
+                        },
+                        border: {
+                            light: '#D9D9E3',
+                            dark: '#2C2C3A',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s ease;
+        }
+        
+        .light-mode {
+            background-color: #F4F4F6;
+        }
+        
+        .dark-mode {
+            background-color: #0C0C0D;
+            color: #FFFFFF;
+        }
+        
+        /* Dark mode text overrides */
+        .dark-mode * {
+            color: #FFFFFF !important;
+        }
+        
+        .dark-mode .text-text-secondary-light {
+            color: #FFFFFF !important;
+        }
+        
+        .dark-mode .text-text-primary-light {
+            color: #FFFFFF !important;
+        }
+        
+        /* Language Select Styling */
+        #languageSelect {
+            background-color: #374151 !important;
+            color: #FFFFFF !important;
+            border: 1px solid #4B5563 !important;
+            padding: 0.5rem !important;
+            border-radius: 0.375rem !important;
+            min-width: 120px !important;
+        }
+        
+        #languageSelect option {
+            background-color: #374151 !important;
+            color: #FFFFFF !important;
+            padding: 0.5rem !important;
+        }
+        
+        .dark-mode #languageSelect {
+            background-color: #1F2937 !important;
+            border-color: #374151 !important;
+        }
+        
+        .dark-mode #languageSelect option {
+            background-color: #1F2937 !important;
+        }
+        
+        /* Extraordinary Dark Royal Violet Splash Screen */
+        .splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #1a0b2e, #16213e, #0f3460, #533a7d);
+            background-size: 400% 400%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            animation: gradientShift 4s ease-in-out infinite, fadeOut 1s ease-in-out 4s forwards;
+            overflow: hidden;
+        }
+        
+        /* Animated background gradient */
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        
+        /* Floating particles */
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        .particle:nth-child(odd) {
+            animation-delay: -2s;
+            background: rgba(138, 43, 226, 0.6);
+        }
+        
+        .particle:nth-child(even) {
+            animation-delay: -4s;
+            background: rgba(75, 0, 130, 0.6);
+        }
+        
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        /* Pulsing rings around logo */
+        .pulse-ring {
+            position: absolute;
+            border: 2px solid rgba(138, 43, 226, 0.4);
+            border-radius: 50%;
+            animation: pulse 2s ease-out infinite;
+        }
+        
+        .pulse-ring:nth-child(1) { animation-delay: 0s; }
+        .pulse-ring:nth-child(2) { animation-delay: 0.5s; }
+        .pulse-ring:nth-child(3) { animation-delay: 1s; }
+        
+        @keyframes pulse {
+            0% {
+                transform: scale(0.8);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(2.5);
+                opacity: 0;
+            }
+        }
+        
+        /* Enhanced logo with multiple effects */
+        .splash-logo {
+            font-size: 4rem;
+            font-weight: bold;
+            color: #fff;
+            text-shadow: 
+                0 0 20px rgba(138, 43, 226, 0.8),
+                0 0 40px rgba(138, 43, 226, 0.6),
+                0 0 60px rgba(138, 43, 226, 0.4);
+            animation: logoFloat 3s ease-in-out infinite, logoGlow 2s ease-in-out infinite alternate;
+            position: relative;
+            z-index: 10;
+        }
+        
+        @keyframes logoFloat {
+            0%, 100% { transform: translateY(0px) scale(1); }
+            50% { transform: translateY(-20px) scale(1.05); }
+        }
+        
+        @keyframes logoGlow {
+            0% { 
+                text-shadow: 
+                    0 0 20px rgba(138, 43, 226, 0.8),
+                    0 0 40px rgba(138, 43, 226, 0.6),
+                    0 0 60px rgba(138, 43, 226, 0.4);
+            }
+            100% { 
+                text-shadow: 
+                    0 0 30px rgba(138, 43, 226, 1),
+                    0 0 60px rgba(138, 43, 226, 0.8),
+                    0 0 90px rgba(138, 43, 226, 0.6);
+            }
+        }
+        
+        .splash-subtitle {
+            font-size: 1.5rem;
+            color: #e2e8f0;
+            margin-top: 2rem;
+            animation: subtitleSlide 2s ease-out 0.5s both;
+            text-shadow: 0 0 10px rgba(138, 43, 226, 0.5);
+        }
+        
+        @keyframes subtitleSlide {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Enhanced typing cursor */
+        .typing-cursor {
+            display: inline-block;
+            width: 4px;
+            height: 3rem;
+            background: linear-gradient(45deg, #8a2be2, #4b0082);
+            animation: cursorBlink 1s infinite, cursorGlow 2s ease-in-out infinite alternate;
+            margin-left: 0.5rem;
+            border-radius: 2px;
+        }
+        
+        @keyframes cursorBlink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+        
+        @keyframes cursorGlow {
+            0% { box-shadow: 0 0 5px rgba(138, 43, 226, 0.5); }
+            100% { box-shadow: 0 0 20px rgba(138, 43, 226, 1), 0 0 30px rgba(138, 43, 226, 0.8); }
+        }
+        
+        /* Loading text with wave effect */
+        .loading-text {
+            position: absolute;
+            bottom: 4rem;
+            font-size: 1.2rem;
+            color: #cbd5e0;
+            animation: wave 2s ease-in-out infinite;
+            text-shadow: 0 0 10px rgba(138, 43, 226, 0.3);
+        }
+        
+        @keyframes wave {
+            0%, 100% { transform: translateY(0px); opacity: 0.7; }
+            50% { transform: translateY(-10px); opacity: 1; }
+        }
+        
+        /* Geometric shapes floating */
+        .geometric-shape {
+            position: absolute;
+            opacity: 0.1;
+            animation: geometricFloat 8s ease-in-out infinite;
+        }
+        
+        .shape-1 {
+            top: 20%;
+            left: 10%;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(45deg, #8a2be2, transparent);
+            transform: rotate(45deg);
+            animation-delay: -1s;
+        }
+        
+        .shape-2 {
+            top: 60%;
+            right: 15%;
+            width: 80px;
+            height: 80px;
+            border: 3px solid #4b0082;
+            border-radius: 50%;
+            animation-delay: -3s;
+        }
+        
+        .shape-3 {
+            bottom: 30%;
+            left: 20%;
+            width: 0;
+            height: 0;
+            border-left: 40px solid transparent;
+            border-right: 40px solid transparent;
+            border-bottom: 70px solid #6a0dad;
+            animation-delay: -5s;
+        }
+        
+        @keyframes geometricFloat {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            33% { transform: translateY(-30px) rotate(120deg); }
+            66% { transform: translateY(30px) rotate(240deg); }
+        }
+        
+        @keyframes fadeOut {
+            to {
+                opacity: 0;
+                visibility: hidden;
+            }
+        }
+        
+        .main-content {
+            opacity: 0;
+            animation: fadeIn 0.8s ease-in-out 5s forwards;
+        }
+        
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+        
+        .sidebar-item {
+            transition: all 0.2s ease;
+        }
+        
+        .sidebar-item:hover {
+            background-color: rgba(107, 91, 149, 0.1);
+            transform: translateX(4px);
+        }
+        
+        .dark-mode .sidebar-item:hover {
+            background-color: rgba(155, 89, 182, 0.2);
+        }
+        
+        .sidebar-item.active {
+            background-color: #6B5B95;
+            color: white;
+            transform: translateX(4px);
+        }
+        
+        .dark-mode .sidebar-item.active {
+            background-color: #9B59B6;
+        }
+        
+        .typing-area {
+            font-size: 18px;
+            line-height: 1.6;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .word {
+            display: inline-block;
+            margin-right: 8px;
+            margin-bottom: 4px;
+            padding: 2px 4px;
+            border-radius: 3px;
+            transition: all 0.2s ease;
+        }
+        
+        .word.correct {
+            background-color: #10b981;
+            color: #fff;
+            transform: scale(1.02);
+        }
+        
+        .word.incorrect {
+            background-color: #ef4444;
+            color: #fff;
+            animation: shake 0.3s ease-in-out;
+        }
+        
+        .word.current {
+            background-color: #6B5B95;
+            color: #fff;
+            animation: glow 1s ease-in-out infinite alternate;
+        }
+        
+        .dark-mode .word.current {
+            background-color: #9B59B6;
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-2px); }
+            75% { transform: translateX(2px); }
+        }
+        
+        @keyframes glow {
+            from { box-shadow: 0 0 5px rgba(107, 91, 149, 0.5); }
+            to { box-shadow: 0 0 15px rgba(107, 91, 149, 0.8); }
+        }
+        
+        .timer-display {
+            background: linear-gradient(135deg, #6B5B95, #57467B);
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .dark-mode .timer-display {
+            background: linear-gradient(135deg, #9B59B6, #8E44AD);
+        }
+        
+        .restart-btn {
+            background: linear-gradient(135deg, #6B5B95, #57467B);
+            color: white;
+            transition: all 0.2s ease;
+        }
+        
+        .dark-mode .restart-btn {
+            background: linear-gradient(135deg, #9B59B6, #8E44AD);
+        }
+        
+        .restart-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(107, 91, 149, 0.3);
+        }
+        
+        .logo {
+            background: linear-gradient(45deg, #6B5B95, #57467B);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: bold;
+        }
+        
+        .dark-mode .logo {
+            background: linear-gradient(45deg, #9B59B6, #8E44AD);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .patron-btn {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            transition: all 0.2s ease;
+        }
+        
+        .patron-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+        }
+        
+        .leaderboard-btn {
+            background: linear-gradient(135deg, #6B5B95, #57467B);
+            transition: all 0.2s ease;
+        }
+        
+        .dark-mode .leaderboard-btn {
+            background: linear-gradient(135deg, #9B59B6, #8E44AD);
+        }
+        
+        .leaderboard-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(107, 91, 149, 0.3);
+        }
+        
+        .achievement-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.2s ease;
+        }
+        
+        .dark-mode .achievement-card {
+            background: rgba(30, 30, 34, 0.95);
+            color: #FFFFFF;
+        }
+        
+        .achievement-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+        }
+        
+        .achievement-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #6B5B95, #57467B);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        
+        .dark-mode .achievement-avatar {
+            background: linear-gradient(135deg, #9B59B6, #8E44AD);
+        }
+        
+        .modal {
+            backdrop-filter: blur(10px);
+            animation: modalFadeIn 0.3s ease-out;
+        }
+        
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        
+        .modal-content {
+            animation: modalSlideIn 0.3s ease-out;
+        }
+        
+        .dark-mode .modal-content {
+            background: #1E1E22;
+            color: #FFFFFF;
+        }
+        
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #6B5B95, #57467B);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+        
+        .dark-mode .user-avatar {
+            background: linear-gradient(135deg, #9B59B6, #8E44AD);
+        }
+        
+        .progress-bar {
+            height: 4px;
+            background: #D9D9E3;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+        
+        .dark-mode .progress-bar {
+            background: #2C2C3A;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #6B5B95, #57467B);
+            transition: width 0.3s ease;
+        }
+        
+        .dark-mode .progress-fill {
+            background: linear-gradient(90deg, #9B59B6, #8E44AD);
+        }
+        
+        .typing-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        
+        .stat-card {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 16px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: all 0.2s ease;
+            border: 1px solid #D9D9E3;
+        }
+        
+        .dark-mode .stat-card {
+            background: rgba(30, 30, 34, 0.9);
+            color: #FFFFFF;
+            border: 1px solid #2C2C3A;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #6B5B95;
+        }
+        
+        .dark-mode .stat-value {
+            color: #9B59B6;
+        }
+        
+        .stat-label {
+            font-size: 0.875rem;
+            color: #707070;
+            margin-top: 4px;
+        }
+        
+        .dark-mode .stat-label {
+            color: #FFFFFF;
+        }
+        
+        .form-input {
+            transition: all 0.2s ease;
+            background: #FFFFFF;
+            border: 1px solid #D9D9E3;
+            color: #1A1A1A;
+        }
+        
+        .dark-mode .form-input {
+            background: #1E1E22 !important;
+            border: 1px solid #2C2C3A !important;
+            color: #FFFFFF !important;
+        }
+        
+        .form-input:focus {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(107, 91, 149, 0.15);
+            border-color: #6B5B95;
+        }
+        
+        .dark-mode .form-input:focus {
+            border-color: #9B59B6;
+            box-shadow: 0 4px 12px rgba(155, 89, 182, 0.15);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #6B5B95, #57467B);
+            transition: all 0.2s ease;
+        }
+        
+        .dark-mode .btn-primary {
+            background: linear-gradient(135deg, #9B59B6, #8E44AD);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(107, 91, 149, 0.3);
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(135deg, #707070, #5a5a5a);
+            transition: all 0.2s ease;
+        }
+        
+        .dark-mode .btn-secondary {
+            background: linear-gradient(135deg, #A3A3C2, #8a8aa0);
+        }
+        
+        .btn-secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(112, 112, 112, 0.3);
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            padding: 16px 24px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+            z-index: 10000;
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+        }
+        
+        .dark-toggle {
+            width: 60px;
+            height: 30px;
+            background: #707070;
+            border-radius: 15px;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .dark-toggle.active {
+            background: #6B5B95;
+        }
+        
+        .dark-mode .dark-toggle.active {
+            background: #9B59B6;
+        }
+        
+        .dark-toggle::before {
+            content: '';
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 24px;
+            height: 24px;
+            background: white;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        .dark-toggle.active::before {
+            transform: translateX(30px);
+        }
+        
+        /* Leaderboard specific styles */
+        .leaderboard-entry {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 12px;
+            margin-bottom: 8px;
+            transition: all 0.2s ease;
+            border: 1px solid #D9D9E3;
+        }
+        
+        .dark-mode .leaderboard-entry {
+            background: rgba(30, 30, 34, 0.9);
+            border: 1px solid #2C2C3A;
+        }
+        
+        .leaderboard-entry:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+        
+        .leaderboard-rank {
+            font-size: 1.25rem;
+            font-weight: bold;
+            min-width: 40px;
+            text-align: center;
+        }
+        
+        .rank-gold { color: #ffd700; }
+        .rank-silver { color: #c0c0c0; }
+        .rank-bronze { color: #cd7f32; }
+        
+        .leaderboard-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #6B5B95, #57467B);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+        
+        .dark-mode .leaderboard-avatar {
+            background: linear-gradient(135deg, #9B59B6, #8E44AD);
+        }
+        
+        .leaderboard-info {
+            flex: 1;
+        }
+        
+        .leaderboard-stats {
+            display: flex;
+            gap: 24px;
+        }
+        
+        .leaderboard-stat {
+            text-align: center;
+        }
+        
+        .leaderboard-stat-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #6B5B95;
+        }
+        
+        .dark-mode .leaderboard-stat-value {
+            color: #9B59B6;
+        }
+        
+        .leaderboard-stat-label {
+            font-size: 0.75rem;
+            color: #707070;
+            margin-top: 2px;
+        }
+        
+        .dark-mode .leaderboard-stat-label {
+            color: #FFFFFF;
+        }
+        
+        /* Multiplayer room styles */
+        .multiplayer-room {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+            border: 1px solid #D9D9E3;
+            transition: all 0.2s ease;
+        }
+        
+        .dark-mode .multiplayer-room {
+            background: rgba(30, 30, 34, 0.9);
+            border: 1px solid #2C2C3A;
+        }
+        
+        .multiplayer-room:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+        
+        .player-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #6B5B95, #57467B);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+        
+        .dark-mode .player-avatar {
+            background: linear-gradient(135deg, #9B59B6, #8E44AD);
+        }
+        
+        /* Responsive design improvements */
+        @media (max-width: 1024px) {
+            .main-layout {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                max-width: none;
+                order: 2;
+            }
+            
+            .main-content-area {
+                order: 1;
+            }
+            
+            .typing-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .splash-logo {
+                font-size: 3rem;
+            }
+            
+            .splash-subtitle {
+                font-size: 1.25rem;
+            }
+            
+            .modal-content {
+                margin: 1rem;
+                max-height: 90vh;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .header-actions {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 0.5rem;
+            }
+            
+            .typing-area {
+                font-size: 16px;
+            }
+            
+            .typing-input-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .typing-input-container input {
+                order: 1;
+            }
+            
+            .timer-display {
+                order: 2;
+                align-self: center;
+            }
+            
+            .restart-btn {
+                order: 3;
+                align-self: center;
+            }
+            
+            .splash-logo {
+                font-size: 2.5rem;
+            }
+            
+            .splash-subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .leaderboard-stats {
+                gap: 16px;
+            }
+            
+            .leaderboard-stat-value {
+                font-size: 1.25rem;
+            }
+            
+            .grid-cols-3 {
+                grid-template-columns: 1fr;
+            }
+            
+            .lg\\:grid-cols-2 {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 640px) {
+            .typing-stats {
+                grid-template-columns: 1fr 1fr;
+                gap: 12px;
+            }
+            
+            .stat-card {
+                padding: 12px;
+            }
+            
+            .stat-value {
+                font-size: 1.5rem;
+            }
+            
+            .achievement-card {
+                padding: 12px;
+                gap: 8px;
+            }
+            
+            .achievement-avatar {
+                width: 40px;
+                height: 40px;
+            }
+            
+            .leaderboard-entry {
+                padding: 12px;
+                gap: 12px;
+            }
+            
+            .leaderboard-avatar {
+                width: 40px;
+                height: 40px;
+            }
+            
+            .leaderboard-stats {
+                gap: 12px;
+            }
+            
+            .modal-content {
+                padding: 1.5rem;
+            }
+            
+            .patron-btn,
+            .leaderboard-btn {
+                padding: 0.5rem 1rem;
+                font-size: 0.875rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .typing-stats {
+                grid-template-columns: 1fr;
+            }
+            
+            .header-brand {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+            
+            .logo {
+                font-size: 1.125rem;
+            }
+            
+            .splash-logo {
+                font-size: 2rem;
+            }
+            
+            .splash-subtitle {
+                font-size: 1rem;
+            }
+            
+            .loading-text {
+                font-size: 1rem;
+                bottom: 2rem;
+            }
+        }
+        
+        /* Mobile-first responsive utilities */
+        .mobile-hidden {
+            display: none;
+        }
+        
+        @media (min-width: 768px) {
+            .mobile-hidden {
+                display: block;
+            }
+        }
+        
+        .mobile-only {
+            display: block;
+        }
+        
+        @media (min-width: 768px) {
+            .mobile-only {
+                display: none;
+            }
+        }
+        
+        /* Touch-friendly improvements */
+        @media (hover: none) and (pointer: coarse) {
+            .sidebar-item,
+            .achievement-card,
+            .leaderboard-entry,
+            .stat-card,
+            .btn-primary,
+            .btn-secondary {
+                transform: none !important;
+            }
+            
+            .sidebar-item:active,
+            .achievement-card:active,
+            .leaderboard-entry:active,
+            .stat-card:active,
+            .btn-primary:active,
+            .btn-secondary:active {
+                transform: scale(0.98) !important;
+            }
+        }
+    </style>
+</head>
+<body class="light-mode" id="body">
+    <!-- Notification -->
+    <div id="notification" class="notification">
+        <div class="flex items-center gap-2">
+            <i class="fas fa-check-circle"></i>
+            <span id="notificationText">Success!</span>
+        </div>
+    </div>
+
+    <!-- Extraordinary Dark Royal Violet Splash Screen -->
+    <div id="splashScreen" class="splash-screen">
+        <!-- Floating Particles -->
+        <div class="particle" style="left: 10%; width: 4px; height: 4px; animation-duration: 6s;"></div>
+        <div class="particle" style="left: 20%; width: 6px; height: 6px; animation-duration: 8s;"></div>
+        <div class="particle" style="left: 30%; width: 3px; height: 3px; animation-duration: 7s;"></div>
+        <div class="particle" style="left: 40%; width: 5px; height: 5px; animation-duration: 9s;"></div>
+        <div class="particle" style="left: 50%; width: 4px; height: 4px; animation-duration: 6s;"></div>
+        <div class="particle" style="left: 60%; width: 7px; height: 7px; animation-duration: 8s;"></div>
+        <div class="particle" style="left: 70%; width: 3px; height: 3px; animation-duration: 7s;"></div>
+        <div class="particle" style="left: 80%; width: 5px; height: 5px; animation-duration: 9s;"></div>
+        <div class="particle" style="left: 90%; width: 4px; height: 4px; animation-duration: 6s;"></div>
+        
+        <!-- Geometric Shapes -->
+        <div class="geometric-shape shape-1"></div>
+        <div class="geometric-shape shape-2"></div>
+        <div class="geometric-shape shape-3"></div>
+        
+        <!-- Pulse Rings -->
+        <div class="pulse-ring" style="width: 200px; height: 200px; top: 50%; left: 50%; transform: translate(-50%, -50%);"></div>
+        <div class="pulse-ring" style="width: 300px; height: 300px; top: 50%; left: 50%; transform: translate(-50%, -50%);"></div>
+        <div class="pulse-ring" style="width: 400px; height: 400px; top: 50%; left: 50%; transform: translate(-50%, -50%);"></div>
+        
+        <!-- Main Logo -->
+        <div class="splash-logo">
+            <i class="fas fa-keyboard"></i>
+            10FASTFINGERS
+            <span class="typing-cursor"></span>
+        </div>
+        <div class="splash-subtitle">Improve your Typing Speed</div>
+        <div class="loading-text">Preparing your extraordinary typing experience...</div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Header -->
+        <header class="bg-gray-800 dark:bg-gray-900 text-white shadow-lg transition-all duration-300">
+            <div class="header-content flex items-center justify-between px-4 md:px-6 py-3">
+                <div class="header-brand flex items-center gap-4 md:gap-6">
+                    <div class="flex items-center gap-2">
+                        <div class="w-8 h-8 bg-gradient-to-r from-primary-500 to-primary-600 rounded flex items-center justify-center">
+                            <i class="fas fa-keyboard text-white"></i>
+                        </div>
+                        <span class="logo text-lg md:text-xl font-bold">10FASTFINGERS</span>
+                    </div>
+                    <span class="text-xs md:text-sm text-gray-300 mobile-hidden">Improve your Typing Speed</span>
+                </div>
+                
+                <div class="header-actions flex items-center gap-2 md:gap-4">
+                    <!-- Dark Mode Toggle -->
+                    <div class="flex items-center gap-2">
+                        <i class="fas fa-sun text-sm"></i>
+                        <div class="dark-toggle" id="darkToggle" onclick="toggleDarkMode()"></div>
+                        <i class="fas fa-moon text-sm"></i>
+                    </div>
+                    
+                    <button onclick="openPatreon()" class="patron-btn px-2 md:px-4 py-2 rounded text-xs md:text-sm font-medium">
+                        <i class="fas fa-heart mr-1"></i>
+                        <span class="mobile-hidden">Become a </span>patron
+                    </button>
+                    <a href="#" class="text-xs md:text-sm hover:text-blue-300 transition-colors mobile-hidden">Forum</a>
+                    <button onclick="showFAQ()" class="text-xs md:text-sm hover:text-blue-300 cursor-pointer transition-colors">FAQ</button>
+                    <button onclick="showSupporter()" class="text-xs md:text-sm hover:text-blue-300 cursor-pointer transition-colors mobile-hidden">Supporter</button>
+                    <div id="userSection" class="hidden">
+                        <div class="flex items-center gap-2">
+                            <div class="user-avatar" id="userAvatar">U</div>
+                            <span id="userName" class="text-xs md:text-sm mobile-hidden"></span>
+                            <button onclick="logout()" class="text-xs text-gray-400 hover:text-white ml-2">Logout</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flex flex-col md:flex-row items-center justify-between px-4 md:px-6 py-2 bg-gray-700 dark:bg-gray-800 gap-2 md:gap-0">
+                <div class="flex items-center gap-2">
+                    <span class="text-xs md:text-sm text-white">Language:</span>
+                    <select id="languageSelect" onchange="changeLanguage()">
+                        <option value="english">English</option>
+                        <option value="spanish">Spanish</option>
+                        <option value="french">French</option>
+                        <option value="german">German</option>
+                        <option value="italian">Italian</option>
+                        <option value="portuguese">Portuguese</option>
+                        <option value="japanese">Japanese</option>
+                    </select>
+                </div>
+                
+                <div class="text-xs md:text-sm">
+                    <button id="loginButton" onclick="showLogin()" class="hover:text-blue-300 cursor-pointer transition-colors text-white">Login / Create Account</button>
+                </div>
+            </div>
+        </header>
+
+        <div class="main-layout flex min-h-screen">
+            <!-- Sidebar -->
+            <div class="sidebar w-full lg:w-64 bg-card-light dark:bg-card-dark bg-opacity-90 dark:bg-opacity-90 p-4 shadow-lg transition-all duration-300">
+                <!-- Typing Tests -->
+                <div class="mb-6">
+                    <div class="sidebar-item active p-3 rounded-lg cursor-pointer" onclick="switchTest('basic')">
+                        <div class="flex items-center gap-2">
+                            <i class="fas fa-play text-sm"></i>
+                            <div>
+                                <div class="font-medium">Typing Test</div>
+                                <div class="text-xs text-text-secondary-light dark:text-text-secondary-dark">Top 200 words</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="sidebar-item p-3 rounded-lg cursor-pointer" onclick="switchTest('advanced')">
+                        <div class="flex items-center gap-2">
+                            <i class="fas fa-forward text-sm"></i>
+                            <div>
+                                <div class="font-medium">Typing Test (advanced)</div>
+                                <div class="text-xs text-text-secondary-light dark:text-text-secondary-dark">Top 1000 words</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="sidebar-item p-3 rounded-lg cursor-pointer" onclick="switchTest('custom')">
+                        <div class="flex items-center gap-2">
+                            <i class="fas fa-cog text-sm text-primary-500"></i>
+                            <div>
+                                <div class="font-medium text-primary-500">Custom Typing Test</div>
+                                <div class="text-xs text-text-secondary-light dark:text-text-secondary-dark">Create your own!</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="sidebar-item p-3 rounded-lg cursor-pointer" onclick="switchTest('multiplayer')">
+                        <div class="flex items-center gap-2">
+                            <i class="fas fa-users text-sm"></i>
+                            <div>
+                                <div class="font-medium">Multiplayer Typing Test</div>
+                                <div class="text-xs text-text-secondary-light dark:text-text-secondary-dark">Play against others</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="sidebar-item p-3 rounded-lg cursor-pointer" onclick="switchTest('competition')">
+                        <div class="flex items-center gap-2">
+                            <i class="fas fa-trophy text-sm"></i>
+                            <div>
+                                <div class="font-medium">Typing Competition</div>
+                                <div class="text-xs text-text-secondary-light dark:text-text-secondary-dark">Who can type the fastest?</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Practice Section -->
+                <div class="mb-6">
+                    <div class="sidebar-item p-3 rounded-lg cursor-pointer" onclick="openTextPractice()">
+                        <div class="flex items-center gap-2">
+                            <i class="fas fa-file-alt text-sm"></i>
+                            <div>
+                                <div class="font-medium">Text Practice</div>
+                                <div class="text-xs text-text-secondary-light dark:text-text-secondary-dark">Practice your own Text</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="sidebar-item p-3 rounded-lg cursor-pointer" onclick="switchTest('top1000')">
+                        <div class="flex items-center gap-2">
+                            <i class="fas fa-chart-bar text-sm"></i>
+                            <div>
+                                <div class="font-medium">Top 1000</div>
+                                <div class="text-xs text-text-secondary-light dark:text-text-secondary-dark">Unlock the Top 1000 words of your language</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Leaderboard Section -->
+                <div class="mb-6">
+                    <div class="sidebar-item p-3 rounded-lg cursor-pointer" onclick="showLeaderboard()">
+                        <div class="flex items-center gap-2">
+                            <i class="fas fa-trophy text-sm text-yellow-500"></i>
+                            <div>
+                                <div class="font-medium">Leaderboard</div>
+                                <div class="text-xs text-text-secondary-light dark:text-text-secondary-dark">Top performers</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Login -->
+                <div class="mb-6">
+                    <div class="sidebar-item p-3 rounded-lg cursor-pointer" onclick="showLogin()">
+                        <div class="flex items-center gap-2">
+                            <i class="fas fa-sign-in-alt text-sm"></i>
+                            <div class="font-medium">Login</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Achievement -->
+                <div class="achievement-card">
+                    <div class="achievement-avatar">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <div class="flex-1">
+                        <div class="text-sm">
+                            <strong>Dynamic</strong> reached <strong>125 WPM</strong> in the 
+                            <span class="text-primary-500">Normal Typing</span>
+                        </div>
+                        <div class="text-xs text-text-secondary-light dark:text-text-secondary-dark mt-1">2 minutes ago</div>
+                    </div>
+                </div>
+                
+                <div class="achievement-card">
+                    <div class="achievement-avatar">
+                        <i class="fas fa-medal"></i>
+                    </div>
+                    <div class="flex-1">
+                        <div class="text-sm">
+                            <strong>SpeedTyper</strong> achieved <strong>98% accuracy</strong> in 
+                            <span class="text-green-600">Advanced Test</span>
+                        </div>
+                        <div class="text-xs text-text-secondary-light dark:text-text-secondary-dark mt-1">5 minutes ago</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="main-content-area flex-1 p-4 md:p-6">
+                <div class="max-w-4xl mx-auto">
+                    <!-- Control Buttons -->
+                    <div class="flex gap-4 mb-6 flex-wrap">
+                        <button class="leaderboard-btn px-4 py-2 rounded-lg text-white font-medium" onclick="showLeaderboard()">
+                            <i class="fas fa-trophy mr-2"></i>
+                            Leaderboard
+                        </button>
+                    </div>
+
+                    <!-- Typing Stats -->
+                    <div class="typing-stats">
+                        <div class="stat-card">
+                            <div class="stat-value" id="currentWPM">0</div>
+                            <div class="stat-label">WPM</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="currentAccuracy">100%</div>
+                            <div class="stat-label">Accuracy</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="wordsTyped">0</div>
+                            <div class="stat-label">Words</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="timeRemaining">60</div>
+                            <div class="stat-label">Time</div>
+                        </div>
+                    </div>
+
+                    <!-- Typing Area -->
+                    <div class="bg-card-light dark:bg-card-dark rounded-lg p-4 md:p-6 mb-6 shadow-lg transition-all duration-300 border border-border-light dark:border-border-dark">
+                        <div id="wordDisplay" class="typing-area mb-6 p-4 bg-background-light dark:bg-background-dark rounded-lg min-h-32 transition-all duration-300">
+                            <!-- Words will be populated here -->
+                        </div>
+                        
+                        <div class="typing-input-container flex flex-col md:flex-row items-center gap-4">
+                            <input 
+                                type="text" 
+                                id="typingInput" 
+                                class="flex-1 w-full p-3 border-2 rounded-lg focus:outline-none text-lg form-input transition-all duration-300"
+                                placeholder="Click here to start typing..."
+                                autocomplete="off"
+                                spellcheck="false"
+                            >
+                            <div class="timer-display px-4 py-3 rounded-lg">
+                                <span id="timer">1:00</span>
+                            </div>
+                            <button id="restartBtn" class="restart-btn px-4 py-3 rounded-lg" onclick="restartTest()">
+                                <i class="fas fa-redo"></i>
+                            </button>
+                        </div>
+                        
+                        <div class="progress-bar mt-4">
+                            <div class="progress-fill" id="progressBar" style="width: 0%"></div>
+                        </div>
+                    </div>
+
+                    <!-- Footer -->
+                    <div class="flex flex-col md:flex-row items-center justify-between text-sm text-text-secondary-light dark:text-text-secondary-dark gap-4">
+                        <div class="flex items-center gap-2">
+                            <span>Powered by</span>
+                            <div class="flex items-center gap-1">
+                                <div class="w-4 h-4 bg-gradient-to-r from-primary-500 to-primary-600 rounded flex items-center justify-center">
+                                    <i class="fas fa-keyboard text-xs text-white"></i>
+                                </div>
+                                <span class="logo text-sm font-bold">10FASTFINGERS</span>
+                            </div>
+                        </div>
+                        <div>
+                            <a href="#" class="text-primary-500 hover:underline">create your own Typing Test</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- All Modals (Leaderboard, Results, Login, etc.) -->
+    <!-- Leaderboard Modal -->
+    <div id="leaderboardModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden modal">
+        <div class="bg-card-light dark:bg-card-dark rounded-lg p-6 md:p-8 max-w-4xl w-full mx-4 max-h-96 overflow-y-auto modal-content">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-xl md:text-2xl font-bold text-text-primary-light dark:text-text-primary-dark">🏆 Global Leaderboard</h2>
+                <button onclick="closeLeaderboard()" class="text-text-secondary-light dark:text-text-secondary-dark hover:text-text-primary-light dark:hover:text-text-primary-dark">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <div class="mb-4 flex gap-2 md:gap-4 flex-wrap">
+                <button onclick="filterLeaderboard('all')" class="btn-primary text-white px-3 md:px-4 py-2 rounded-lg text-sm filter-btn active" data-filter="all">
+                    All Time
+                </button>
+                <button onclick="filterLeaderboard('today')" class="btn-secondary text-white px-3 md:px-4 py-2 rounded-lg text-sm filter-btn" data-filter="today">
+                    Today
+                </button>
+                <button onclick="filterLeaderboard('week')" class="btn-secondary text-white px-3 md:px-4 py-2 rounded-lg text-sm filter-btn" data-filter="week">
+                    This Week
+                </button>
+                <button onclick="filterLeaderboard('month')" class="btn-secondary text-white px-3 md:px-4 py-2 rounded-lg text-sm filter-btn" data-filter="month">
+                    This Month
+                </button>
+            </div>
+            
+            <div id="leaderboardContent" class="space-y-2">
+                <!-- Leaderboard entries will be populated here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Results Modal -->
+    <div id="resultsModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden modal">
+        <div class="bg-card-light dark:bg-card-dark rounded-lg p-6 md:p-8 max-w-md w-full mx-4 modal-content">
+            <div class="text-center">
+                <h2 class="text-xl md:text-2xl font-bold text-text-primary-light dark:text-text-primary-dark mb-6">Test Results</h2>
+                
+                <div class="grid grid-cols-2 gap-4 mb-6">
+                    <div class="bg-blue-50 dark:bg-blue-900/30 rounded-lg p-4">
+                        <div class="text-2xl md:text-3xl font-bold text-primary-500" id="finalWPM">0</div>
+                        <div class="text-sm text-text-secondary-light dark:text-text-secondary-dark">WPM</div>
+                    </div>
+                    <div class="bg-green-50 dark:bg-green-900/30 rounded-lg p-4">
+                        <div class="text-2xl md:text-3xl font-bold text-green-600 dark:text-green-400" id="finalAccuracy">100%</div>
+                        <div class="text-sm text-text-secondary-light dark:text-text-secondary-dark">Accuracy</div>
+                    </div>
+                </div>
+                
+                <div class="bg-background-light dark:bg-background-dark rounded-lg p-4 mb-6">
+                    <div class="grid grid-cols-2 gap-4 text-sm">
+                        <div>
+                            <span class="text-text-secondary-light dark:text-text-secondary-dark">Correct Words:</span>
+                            <span class="font-semibold ml-2 text-text-primary-light dark:text-text-primary-dark" id="correctWords">0</span>
+                        </div>
+                        <div>
+                            <span class="text-text-secondary-light dark:text-text-secondary-dark">Wrong Words:</span>
+                            <span class="font-semibold ml-2 text-text-primary-light dark:text-text-primary-dark" id="wrongWords">0</span>
+                        </div>
+                        <div>
+                            <span class="text-text-secondary-light dark:text-text-secondary-dark">Keystrokes:</span>
+                            <span class="font-semibold ml-2 text-text-primary-light dark:text-text-primary-dark" id="totalKeystrokes">0</span>
+                        </div>
+                        <div>
+                            <span class="text-text-secondary-light dark:text-text-secondary-dark">Correct:</span>
+                            <span class="font-semibold ml-2 text-text-primary-light dark:text-text-primary-dark" id="correctKeystrokes">0</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flex gap-3">
+                    <button onclick="restartTest()" class="flex-1 btn-primary text-white py-3 rounded-lg transition-colors">
+                        Try Again
+                    </button>
+                    <button onclick="shareResults()" class="flex-1 bg-green-500 hover:bg-green-600 text-white py-3 rounded-lg transition-colors">
+                        Share
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden modal">
+        <div class="bg-card-light dark:bg-card-dark rounded-lg p-6 md:p-8 max-w-md w-full mx-4 modal-content">
+            <div class="text-center mb-6">
+                <h2 class="text-xl md:text-2xl font-bold text-text-primary-light dark:text-text-primary-dark" id="authTitle">Welcome Back</h2>
+                <p class="text-text-secondary-light dark:text-text-secondary-dark mt-2" id="authSubtitle">Sign in to track your progress</p>
+            </div>
+            
+            <div class="space-y-4">
+                <!-- Social Login Buttons -->
+                <button class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 px-4 rounded-lg flex items-center justify-center gap-2 transition-colors">
+                    <i class="fab fa-facebook-f"></i>
+                    Continue with Facebook
+                </button>
+                
+                <button class="w-full bg-red-500 hover:bg-red-600 text-white py-3 px-4 rounded-lg flex items-center justify-center gap-2 transition-colors">
+                    <i class="fab fa-google"></i>
+                    Continue with Google
+                </button>
+                
+                <button class="w-full bg-blue-400 hover:bg-blue-500 text-white py-3 px-4 rounded-lg flex items-center justify-center gap-2 transition-colors">
+                    <i class="fab fa-twitter"></i>
+                    Continue with Twitter
+                </button>
+                
+                <div class="relative my-6">
+                    <div class="absolute inset-0 flex items-center">
+                        <div class="w-full border-t border-border-light dark:border-border-dark"></div>
+                    </div>
+                    <div class="relative flex justify-center text-sm">
+                        <span class="px-2 bg-card-light dark:bg-card-dark text-text-secondary-light dark:text-text-secondary-dark">or</span>
+                    </div>
+                </div>
+                
+                <!-- Login Form -->
+                <form id="loginForm" class="space-y-4">
+                    <div id="nameField" class="hidden">
+                        <input type="text" id="fullName" placeholder="Full Name" class="w-full p-3 rounded-lg focus:outline-none form-input">
+                    </div>
+                    <div>
+                        <input type="email" id="email" placeholder="Email address" class="w-full p-3 rounded-lg focus:outline-none form-input" required>
+                    </div>
+                    <div>
+                        <input type="password" id="password" placeholder="Password" class="w-full p-3 rounded-lg focus:outline-none form-input" required>
+                    </div>
+                    <div id="confirmPasswordField" class="hidden">
+                        <input type="password" id="confirmPassword" placeholder="Confirm Password" class="w-full p-3 rounded-lg focus:outline-none form-input">
+                    </div>
+                    <button type="submit" id="authSubmitBtn" class="w-full btn-primary text-white py-3 px-4 rounded-lg transition-colors">
+                        Sign In
+                    </button>
+                </form>
+                
+                <div class="text-center text-sm text-text-secondary-light dark:text-text-secondary-dark">
+                    <a href="#" class="text-primary-500 hover:underline">Forgot password?</a>
+                    <span class="mx-2">•</span>
+                    <button id="toggleAuth" class="text-primary-500 hover:underline">Create new account</button>
+                </div>
+            </div>
+            
+            <button onclick="closeLogin()" class="absolute top-4 right-4 text-text-secondary-light dark:text-text-secondary-dark hover:text-text-primary-light dark:hover:text-text-primary-dark">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Text Practice Modal -->
+    <div id="textPracticeModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden modal">
+        <div class="bg-card-light dark:bg-card-dark rounded-lg p-6 md:p-8 max-w-4xl w-full mx-4 max-h-96 overflow-y-auto modal-content">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-xl md:text-2xl font-bold text-text-primary-light dark:text-text-primary-dark">Text Practice</h2>
+                <button onclick="closeTextPractice()" class="text-text-secondary-light dark:text-text-secondary-dark hover:text-text-primary-light dark:hover:text-text-primary-dark">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                <div class="flex flex-col gap-2">
+                    <label class="text-sm font-medium text-text-primary-light dark:text-text-primary-dark">Practice Mode</label>
+                    <select class="p-2 rounded-lg form-input" id="practiceMode">
+                        <option value="custom">Custom Text</option>
+                        <option value="quotes">Famous Quotes</option>
+                        <option value="books">Book Excerpts</option>
+                        <option value="code">Code Practice</option>
+                    </select>
+                </div>
+                
+                <div class="flex flex-col gap-2">
+                    <label class="text-sm font-medium text-text-primary-light dark:text-text-primary-dark">Difficulty</label>
+                    <select class="p-2 rounded-lg form-input" id="practiceDifficulty">
+                        <option value="easy">Easy</option>
+                        <option value="medium">Medium</option>
+                        <option value="hard">Hard</option>
+                    </select>
+                </div>
+                
+                <div class="flex flex-col gap-2">
+                    <label class="text-sm font-medium text-text-primary-light dark:text-text-primary-dark">Time Limit</label>
+                    <select class="p-2 rounded-lg form-input" id="practiceTime">
+                        <option value="60">1 minute</option>
+                        <option value="120">2 minutes</option>
+                        <option value="300">5 minutes</option>
+                        <option value="0">No limit</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-text-primary-light dark:text-text-primary-dark mb-2">Enter your practice text:</label>
+                <textarea 
+                    id="practiceText" 
+                    class="w-full h-32 p-3 rounded-lg focus:outline-none form-input"
+                    placeholder="Enter the text you want to practice typing, or select a mode above to get sample text..."
+                ></textarea>
+            </div>
+            
+            <div class="flex gap-3">
+                <button onclick="startPracticeTest()" class="btn-primary text-white px-6 py-2 rounded-lg transition-colors">
+                    Start Practice
+                </button>
+                <button onclick="generateSampleText()" class="btn-secondary text-white px-6 py-2 rounded-lg transition-colors">
+                    Generate Sample
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Test Modal -->
+    <div id="customTestModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden modal">
+        <div class="bg-card-light dark:bg-card-dark rounded-lg p-6 md:p-8 max-w-2xl w-full mx-4 modal-content">
+            <h2 class="text-xl md:text-2xl font-bold text-text-primary-light dark:text-text-primary-dark mb-6">Create Custom Typing Test</h2>
+            
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-text-primary-light dark:text-text-primary-dark mb-2">Enter your text:</label>
+                <textarea 
+                    id="customText" 
+                    class="w-full h-32 p-3 rounded-lg focus:outline-none form-input"
+                    placeholder="Enter the text you want to practice typing..."
+                ></textarea>
+            </div>
+            
+            <div class="flex gap-3">
+                <button onclick="startCustomTest()" class="btn-primary text-white px-6 py-2 rounded-lg transition-colors">
+                    Start Test
+                </button>
+                <button onclick="closeCustomModal()" class="btn-secondary text-white px-6 py-2 rounded-lg transition-colors">
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Multiplayer Modal -->
+    <div id="multiplayerModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden modal">
+        <div class="bg-card-light dark:bg-card-dark rounded-lg p-6 md:p-8 max-w-4xl w-full mx-4 max-h-96 overflow-y-auto modal-content">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-xl md:text-2xl font-bold text-text-primary-light dark:text-text-primary-dark">Multiplayer Typing Test</h2>
+                <button onclick="closeMultiplayerModal()" class="text-text-secondary-light dark:text-text-secondary-dark hover:text-text-primary-light dark:hover:text-text-primary-dark">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div>
+                    <h3 class="text-lg font-semibold mb-4 text-text-primary-light dark:text-text-primary-dark">Active Rooms</h3>
+                    
+                    <div class="multiplayer-room">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h4 class="font-semibold">Speed Demons 🔥</h4>
+                                <p class="text-sm text-text-secondary-light dark:text-text-secondary-dark">English • Advanced Level</p>
+                                <div class="flex gap-2 mt-2">
+                                    <div class="player-avatar">A</div>
+                                    <div class="player-avatar">B</div>
+                                    <div class="player-avatar">C</div>
+                                    <div class="text-sm text-text-secondary-light dark:text-text-secondary-dark flex items-center ml-2">+2 more</div>
+                                </div>
+                            </div>
+                            <button onclick="joinRoom('speed-demons')" class="btn-primary text-white px-4 py-2 rounded-lg text-sm">
+                                Join
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="multiplayer-room">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h4 class="font-semibold">Beginners Welcome 🌟</h4>
+                                <p class="text-sm text-text-secondary-light dark:text-text-secondary-dark">English • Basic Level</p>
+                                <div class="flex gap-2 mt-2">
+                                    <div class="player-avatar">X</div>
+                                    <div class="player-avatar">Y</div>
+                                </div>
+                            </div>
+                            <button onclick="joinRoom('beginners')" class="btn-primary text-white px-4 py-2 rounded-lg text-sm">
+                                Join
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="multiplayer-room">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h4 class="font-semibold">Code Warriors 💻</h4>
+                                <p class="text-sm text-text-secondary-light dark:text-text-secondary-dark">Programming • Expert Level</p>
+                                <div class="flex gap-2 mt-2">
+                                    <div class="player-avatar">D</div>
+                                    <div class="player-avatar">E</div>
+                                    <div class="player-avatar">F</div>
+                                    <div class="player-avatar">G</div>
+                                </div>
+                            </div>
+                            <button onclick="joinRoom('code-warriors')" class="btn-primary text-white px-4 py-2 rounded-lg text-sm">
+                                Join
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-semibold mb-4 text-text-primary-light dark:text-text-primary-dark">Create New Room</h3>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-text-primary-light dark:text-text-primary-dark mb-1">Room Name</label>
+                            <input type="text" id="roomName" class="w-full p-3 rounded-lg focus:outline-none form-input" placeholder="Enter room name">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-text-primary-light dark:text-text-primary-dark mb-1">Language</label>
+                            <select id="roomLanguage" class="w-full p-3 rounded-lg focus:outline-none form-input">
+                                <option value="english">English</option>
+                                <option value="spanish">Spanish</option>
+                                <option value="french">French</option>
+                                <option value="german">German</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-text-primary-light dark:text-text-primary-dark mb-1">Difficulty</label>
+                            <select id="roomDifficulty" class="w-full p-3 rounded-lg focus:outline-none form-input">
+                                <option value="basic">Basic</option>
+                                <option value="advanced">Advanced</option>
+                                <option value="expert">Expert</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-text-primary-light dark:text-text-primary-dark mb-1">Max Players</label>
+                            <select id="maxPlayers" class="w-full p-3 rounded-lg focus:outline-none form-input">
+                                <option value="2">2 Players</option>
+                                <option value="4">4 Players</option>
+                                <option value="6">6 Players</option>
+                                <option value="8">8 Players</option>
+                            </select>
+                        </div>
+                        
+                        <button onclick="createRoom()" class="w-full btn-primary text-white py-3 rounded-lg">
+                            Create Room
+                        </button>
+                    </div>
+                    
+                    <div class="mt-6 p-4 bg-background-light dark:bg-background-dark rounded-lg">
+                        <div class="text-sm text-text-secondary-light dark:text-text-secondary-dark mb-2">Online Players: <span class="font-bold text-green-600">1,247</span></div>
+                        <div class="text-sm text-text-secondary-light dark:text-text-secondary-dark">Active Rooms: <span class="font-bold text-primary-500">23</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Competition Modal -->
+    <div id="competitionModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden modal">
+        <div class="bg-card-light dark:bg-card-dark rounded-lg p-6 md:p-8 max-w-4xl w-full mx-4 max-h-96 overflow-y-auto modal-content">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-xl md:text-2xl font-bold text-text-primary-light dark:text-text-primary-dark">Typing Competition</h2>
+                <button onclick="closeCompetition()" class="text-text-secondary-light dark:text-text-secondary-dark hover:text-text-primary-light dark:hover:text-text-primary-dark">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <div class="mb-4 flex gap-4">
+                <button onclick="joinCompetition()" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors">
+                    <i class="fas fa-user"></i>
+                    Join Competition
+                </button>
+                <button onclick="createCompetition()" class="btn-primary text-white px-4 py-2 rounded-lg flex items-center gap-2">
+                    <i class="fas fa-plus"></i>
+                    Create Competition
+                </button>
+            </div>
+            
+            <div class="space-y-6">
+                <div>
+                    <h3 class="text-lg font-semibold mb-4 text-text-primary-light dark:text-text-primary-dark">Active Competitions</h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead class="bg-background-light dark:bg-background-dark">
+                                <tr>
+                                    <th class="text-left p-3 text-text-primary-light dark:text-text-primary-dark">Competition</th>
+                                    <th class="text-left p-3 text-text-primary-light dark:text-text-primary-dark">Action</th>
+                                    <th class="text-center p-3 text-text-primary-light dark:text-text-primary-dark">Participants</th>
+                                    <th class="text-center p-3 text-text-primary-light dark:text-text-primary-dark">Tests taken</th>
+                                    <th class="text-center p-3 text-text-primary-light dark:text-text-primary-dark">Time left</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="border-b border-border-light dark:border-border-dark hover:bg-background-light dark:hover:bg-background-dark">
+                                    <td class="p-3">English Competition</td>
+                                    <td class="p-3"><button onclick="joinSpecificCompetition('english')" class="bg-background-light dark:bg-background-dark hover:bg-primary-500 hover:text-white px-3 py-1 rounded text-sm transition-colors">▶ Join</button></td>
+                                    <td class="text-center p-3 font-semibold text-text-primary-light dark:text-text-primary-dark">85</td>
+                                    <td class="text-center p-3 text-text-primary-light dark:text-text-primary-dark">207</td>
+                                    <td class="text-center p-3 text-text-primary-light dark:text-text-primary-dark">7m</td>
+                                </tr>
+                                <tr class="border-b border-border-light dark:border-border-dark hover:bg-background-light dark:hover:bg-background-dark">
+                                    <td class="p-3">Spanish Competition</td>
+                                    <td class="p-3"><button onclick="joinSpecificCompetition('spanish')" class="bg-background-light dark:bg-background-dark hover:bg-primary-500 hover:text-white px-3 py-1 rounded text-sm transition-colors">▶ Join</button></td>
+                                    <td class="text-center p-3 font-semibold text-text-primary-light dark:text-text-primary-dark">44</td>
+                                    <td class="text-center p-3 text-text-primary-light dark:text-text-primary-dark">96</td>
+                                    <td class="text-center p-3 text-text-primary-light dark:text-text-primary-dark">16m</td>
+                                </tr>
+                                <tr class="border-b border-border-light dark:border-border-dark hover:bg-background-light dark:hover:bg-background-dark">
+                                    <td class="p-3">French Competition</td>
+                                    <td class="p-3"><button onclick="joinSpecificCompetition('french')" class="bg-background-light dark:bg-background-dark hover:bg-primary-500 hover:text-white px-3 py-1 rounded text-sm transition-colors">▶ Join</button></td>
+                                    <td class="text-center p-3 font-semibold text-text-primary-light dark:text-text-primary-dark">24</td>
+                                    <td class="text-center p-3 text-text-primary-light dark:text-text-primary-dark">62</td>
+                                    <td class="text-center p-3 text-text-primary-light dark:text-text-primary-dark">28m</td>
+                                </tr>
+                                <tr class="border-b border-border-light dark:border-border-dark hover:bg-background-light dark:hover:bg-background-dark">
+                                    <td class="p-3">German Competition</td>
+                                    <td class="p-3"><button onclick="joinSpecificCompetition('german')" class="bg-background-light dark:bg-background-dark hover:bg-primary-500 hover:text-white px-3 py-1 rounded text-sm transition-colors">▶ Join</button></td>
+                                    <td class="text-center p-3 font-semibold text-text-primary-light dark:text-text-primary-dark">27</td>
+                                    <td class="text-center p-3 text-text-primary-light dark:text-text-primary-dark">74</td>
+                                    <td class="text-center p-3 text-text-primary-light dark:text-text-primary-dark">2h</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FAQ Modal -->
+    <div id="faqModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden modal">
+        <div class="bg-card-light dark:bg-card-dark rounded-lg p-6 md:p-8 max-w-4xl w-full mx-4 max-h-96 overflow-y-auto modal-content">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-xl md:text-2xl font-bold text-text-primary-light dark:text-text-primary-dark">FAQ - frequently asked questions</h2>
+                <button onclick="closeFAQ()" class="text-text-secondary-light dark:text-text-secondary-dark hover:text-text-primary-light dark:hover:text-text-primary-dark">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div>
+                    <p class="text-sm text-text-secondary-light dark:text-text-secondary-dark mb-6">If you have a question which is not mentioned here, please contact via email: go4@christianstrang.de</p>
+                    
+                    <div class="mb-6">
+                        <h3 class="text-lg font-semibold text-primary-500 mb-2">GDPR / DSGVO</h3>
+                        <p class="text-sm text-text-primary-light dark:text-text-primary-dark">For your questions regarding the General Data Protection Regulation we have created this specific FAQ: <a href="#" class="text-primary-500 hover:underline">GDPR / DSGVO FAQ</a></p>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <h3 class="text-lg font-semibold text-primary-500 mb-2">Login not working</h3>
+                        <p class="text-sm text-text-primary-light dark:text-text-primary-dark">Before sending me an email about your login not working, please <strong>try every login method</strong> (click on the facebook button, the twitter and the google button). 90% of account login issues happen because users thought that they used a different login method.</p>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <h3 class="text-lg font-semibold text-primary-500 mb-2">My results are not visible in the competition</h3>
+                        <p class="text-sm text-text-primary-light dark:text-text-primary-dark">You probably have to unlock your result by completing the anti-cheat-test. At the top of the page your should see 'notifications', clicking on it you will be able to participate in an anti-cheat-test.</p>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <h3 class="text-lg font-semibold text-primary-500 mb-2">WPM - words per minute</h3>
+                        <p class="text-sm text-text-primary-light dark:text-text-primary-dark">WPM-calculation is based on the following calculation: 5 keystrokes equal 1 WPM, if you don't believe me, check Wikipedia about <a href="#" class="text-primary-500 hover:underline">Words per minute</a> :)</p>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <h3 class="text-lg font-semibold text-primary-500 mb-2">What is a keystroke?</h3>
+                        <p class="text-sm text-text-primary-light dark:text-text-primary-dark">Every key you hit on the keyboard to type a letter is one keystroke. The calculation also considers if you have to type uppercase letters or language specific letters who need 2 keystrokes to be typed (for example "A"). For example "quick" needs 5 keystrokes whereas "America" needs 8 keystrokes.</p>
+                    </div>
+                </div>
+                
+                <div class="bg-primary-50 dark:bg-primary-900/30 p-4 rounded-lg">
+                    <h3 class="text-lg font-semibold text-primary-500 mb-4">FAQ - frequently asked questions</h3>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#" class="text-primary-500 hover:underline">GDPR / DSGVO</a></li>
+                        <li><a href="#" class="text-primary-500 hover:underline">Login not working</a></li>
+                        <li><a href="#" class="text-primary-500 hover:underline">WPM - words per minute</a></li>
+                        <li><a href="#" class="text-primary-500 hover:underline">What is a keystroke?</a></li>
+                        <li><a href="#" class="text-primary-500 hover:underline">Why is my score not saved (sometimes)?</a></li>
+                        <li><a href="#" class="text-primary-500 hover:underline">My scores over 120 WPM are not visible</a></li>
+                        <li><a href="#" class="text-primary-500 hover:underline">My results are not visible in the competition</a></li>
+                        <li><a href="#" class="text-primary-500 hover:underline">Translation - How can I help?</a></li>
+                        <li><a href="#" class="text-primary-500 hover:underline">Where is my achievement?</a></li>
+                        <li><a href="#" class="text-primary-500 hover:underline">How do you know which language specific characters need more than 1 keystroke?</a></li>
+                        <li><a href="#" class="text-primary-500 hover:underline">My iPad auto-capitalizes the first character of every word</a></li>
+                        <li><a href="#" class="text-primary-500 hover:underline">What is the average wpm of the population</a></li>
+                        <li><a href="#" class="text-primary-500 hover:underline">All time Highscore</a></li>
+                        <li><a href="#" class="text-primary-500 hover:underline">How is the accuracy calculated?</a></li>
+                        <li><a href="#" class="text-primary-500 hover:underline">How are the score/points in the Text Practice Mode calculated?</a></li>
+                        <li><a href="#" class="text-primary-500 hover:underline">What is the tie breaking rule?</a></li>
+                        <li><a href="#" class="text-primary-500 hover:underline">How can I delete my account?</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Supporter Modal -->
+    <div id="supporterModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden modal">
+        <div class="bg-card-light dark:bg-card-dark rounded-lg p-6 md:p-8 max-w-4xl w-full mx-4 max-h-96 overflow-y-auto modal-content">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-xl md:text-2xl font-bold text-text-primary-light dark:text-text-primary-dark">Supporter ❤️</h2>
+                <button onclick="closeSupporter()" class="text-text-secondary-light dark:text-text-secondary-dark hover:text-text-primary-light dark:hover:text-text-primary-dark">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div>
+                    <p class="text-sm text-text-secondary-light dark:text-text-secondary-dark mb-6">If you want to see your name on this list, please visit our <a href="https://www.patreon.com/10fastfingers" class="text-primary-500 hover:underline">patreon page</a></p>
+                    
+                    <ul class="space-y-1 text-sm text-text-primary-light dark:text-text-primary-dark">
+                        <li><a href="#" class="text-primary-500 hover:underline">Linsk</a></li>
+                        <li><a href="#" class="text-primary-500 hover:underline">wRadion</a></li>
+                        <li><a href="#" class="text-primary-500 hover:underline">Switchblade</a></li>
+                        <li><a href="#" class="text-primary-500 hover:underline">Maxx Brixner</a></li>
+                        <li><a href="#" class="text-primary-500 hover:underline">JohnDorman</a></li>
+                        <li><a href="#" class="text-primary-500 hover:underline">Sardach</a></li>
+                        <li><a href="#" class="text-primary-500 hover:underline">PDSheridan</a></li>
+                        <li><a href="#" class="text-primary-500 hover:underline">Pandooor</a></li>
+                        <li><a href="#" class="text-primary-500 hover:underline">[10FF] Jashe</a></li>
+                        <li><a href="#" class="text-primary-500 hover:underline">runner</a></li>
+                        <li><a href="#" class="text-primary-500 hover:underline">Vishy</a></li>
+                        <li><a href="#" class="text-primary-500 hover:underline">MaxSteel90</a></li>
+                        <li><a href="#" class="text-primary-500 hover:underline">slgab</a></li>
+                        <li><a href="#" class="text-primary-500 hover:underline">AA</a></li>
+                        <li><a href="#" class="text-primary-500 hover:underline">OmeWappie</a></li>
+                        <li><a href="#" class="text-primary-500 hover:underline">KleineWelt</a></li>
+                        <li><a href="#" class="text-primary-500 hover:underline">joshido</a></li>
+                        <li><a href="#" class="text-primary-500 hover:underline">Alfredo</a></li>
+                        <li><a href="#" class="text-primary-500 hover:underline">Nikolion</a></li>
+                        <li><a href="#" class="text-primary-500 hover:underline">terezast</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-semibold text-text-primary-light dark:text-text-primary-dark mb-4">Credits</h3>
+                    <ul class="space-y-3 text-sm">
+                        <li>
+                            <a href="#" class="text-primary-500 hover:underline font-medium">Andrea Wawrzynek</a>
+                            <div class="text-text-secondary-light dark:text-text-secondary-dark italic">translated the site into Croatian language</div>
+                        </li>
+                        <li>
+                            <a href="#" class="text-primary-500 hover:underline font-medium">Lukas Taškūnas</a>
+                            <div class="text-text-secondary-light dark:text-text-secondary-dark italic">translated the site into Lithuanian language</div>
+                        </li>
+                        <li>
+                            <a href="#" class="text-primary-500 hover:underline font-medium">Yadigar Muradov</a>
+                            <div class="text-text-secondary-light dark:text-text-secondary-dark italic">translated the site into Azerbaijani</div>
+                        </li>
+                        <li>
+                            <a href="#" class="text-primary-500 hover:underline font-medium">Rafał Szwabo</a>
+                            <div class="text-text-secondary-light dark:text-text-secondary-dark italic">helped with the polish translation</div>
+                        </li>
+                        <li>
+                            <a href="#" class="text-primary-500 hover:underline font-medium">Marco Majland Svendsen</a>
+                            <div class="text-text-secondary-light dark:text-text-secondary-dark italic">translated the site to danish</div>
+                        </li>
+                        <li>
+                            <a href="#" class="text-primary-500 hover:underline font-medium">Adam Abramov</a>
+                            <div class="text-text-secondary-light dark:text-text-secondary-dark italic">translated the site to hebrew</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Word lists for different languages
+        const wordLists = {
+            english: [
+                'the', 'be', 'to', 'of', 'and', 'a', 'in', 'that', 'have', 'it', 'for', 'not', 'with', 'he', 'as', 'you', 'do', 'at', 'this', 'but', 'his', 'by', 'from', 'they', 'we', 'say', 'her', 'she', 'or', 'an', 'will', 'my', 'one', 'all', 'would', 'there', 'their', 'what', 'so', 'up', 'out', 'if', 'about', 'who', 'get', 'which', 'go', 'me', 'when', 'make', 'can', 'like', 'time', 'no', 'just', 'him', 'know', 'take', 'people', 'into', 'year', 'your', 'good', 'some', 'could', 'them', 'see', 'other', 'than', 'then', 'now', 'look', 'only', 'come', 'its', 'over', 'think', 'also', 'back', 'after', 'use', 'two', 'how', 'our', 'work', 'first', 'well', 'way', 'even', 'new', 'want', 'because', 'any', 'these', 'give', 'day', 'most', 'us', 'is', 'water', 'long', 'find', 'here', 'thing', 'great', 'turn', 'every', 'little', 'world', 'life', 'still', 'old', 'tell', 'right', 'large', 'try', 'ask', 'again', 'play', 'spell', 'where', 'move', 'right', 'boy', 'came', 'help', 'next', 'line', 'answer', 'right', 'mean', 'each', 'tell', 'very', 'after', 'move', 'need', 'land', 'different', 'home', 'us', 'picture', 'try', 'again', 'animal', 'point', 'mother', 'world', 'near', 'build', 'self', 'earth', 'father', 'head', 'stand', 'own', 'page', 'should', 'country', 'found', 'answer', 'school', 'grow', 'study', 'still', 'learn', 'plant', 'cover', 'food', 'sun', 'four', 'between', 'state', 'keep', 'eye', 'never', 'last', 'let', 'thought', 'city', 'tree', 'cross', 'farm', 'hard', 'start', 'might', 'story', 'saw', 'far', 'sea', 'draw', 'left', 'late', 'run', 'dont', 'while', 'press', 'close', 'night', 'real', 'life', 'few', 'north', 'open', 'seem', 'together', 'next', 'white', 'children', 'begin', 'got', 'walk', 'example', 'ease', 'paper', 'group', 'always', 'music', 'those', 'both', 'mark', 'often', 'letter', 'until', 'mile', 'river', 'car', 'feet', 'care', 'second', 'book', 'carry', 'took', 'science', 'eat', 'room', 'friend', 'began', 'idea', 'fish', 'mountain', 'stop', 'once', 'base', 'hear', 'horse', 'cut', 'sure', 'watch', 'color', 'face', 'wood', 'main', 'enough', 'plain', 'girl', 'usual', 'young', 'ready', 'above', 'ever', 'red', 'list', 'though', 'feel', 'talk', 'bird', 'soon', 'body', 'dog', 'family', 'direct', 'pose', 'leave', 'song', 'measure', 'door', 'product', 'black', 'short', 'numeral', 'class', 'wind', 'question', 'happen', 'complete', 'ship', 'area', 'half', 'rock', 'order', 'fire', 'south', 'problem', 'piece', 'told', 'knew', 'pass', 'since', 'top', 'whole', 'king', 'space', 'heard', 'best', 'hour', 'better', 'during', 'hundred', 'five', 'remember', 'step', 'early', 'hold', 'west', 'ground', 'interest', 'reach', 'fast', 'verb', 'sing', 'listen', 'six', 'table', 'travel', 'less', 'morning', 'ten', 'simple', 'several', 'vowel', 'toward', 'war', 'lay', 'against', 'pattern', 'slow', 'center', 'person', 'money', 'serve', 'appear', 'road', 'map', 'rain', 'rule', 'govern', 'pull', 'cold', 'notice', 'voice', 'unit', 'power', 'town', 'fine', 'certain', 'fly', 'fall', 'lead', 'cry', 'dark', 'machine', 'note', 'wait', 'plan', 'figure', 'star', 'box', 'noun', 'field', 'rest', 'correct', 'able', 'pound', 'done', 'beauty', 'drive', 'stood', 'contain', 'front', 'teach', 'week', 'final', 'gave', 'green', 'oh', 'quick', 'develop', 'ocean', 'warm', 'free', 'minute', 'strong', 'special', 'mind', 'behind', 'clear', 'tail', 'produce', 'fact', 'street', 'inch', 'multiply', 'nothing', 'course', 'stay', 'wheel', 'full', 'force', 'blue', 'object', 'decide', 'surface', 'deep', 'moon', 'island', 'foot', 'system', 'busy', 'test', 'record', 'boat', 'common', 'gold', 'possible', 'plane', 'stead', 'dry', 'wonder', 'laugh', 'thousands', 'ago', 'ran', 'check', 'game', 'shape', 'equate', 'hot', 'miss', 'brought', 'heat', 'snow', 'tire', 'bring', 'yes', 'distant', 'fill', 'east', 'paint', 'language', 'among'
+            ],
+            spanish: [
+                'el', 'la', 'de', 'que', 'y', 'a', 'en', 'un', 'ser', 'se', 'no', 'te', 'lo', 'le', 'da', 'su', 'por', 'son', 'con', 'para', 'al', 'una', 'su', 'del', 'las', 'es', 'me', 'uno', 'todo', 'nos', 'ni', 'su', 'ya', 'o', 'si', 'mi', 'puede', 'él', 'esta', 'le', 'más', 'este', 'la', 'no', 'casa', 'hasta', 'año', 'donde', 'quien', 'desde', 'días', 'aquí', 'les', 'otro', 'ese', 'eso', 'ante', 'ellos', 'e', 'esto', 'mí', 'antes', 'algunos', 'qué', 'unos', 'yo', 'otro', 'otras', 'otra', 'él', 'tanto', 'esa', 'estos', 'mucho', 'quienes', 'nada', 'muchos', 'cual', 'poco', 'ella', 'estar', 'estas', 'algunas', 'algo', 'nosotros', 'mi', 'mis', 'tú', 'te', 'ti', 'tu', 'tus', 'ellas', 'nosotras', 'vosotros', 'vosotras', 'os', 'mío', 'mía', 'míos', 'mías', 'tuyo', 'tuya', 'tuyos', 'tuyas', 'suyo', 'suya', 'suyos', 'suyas', 'nuestro', 'nuestra', 'nuestros', 'nuestras', 'vuestro', 'vuestra', 'vuestros', 'vuestras', 'esos', 'esas', 'estoy', 'estás', 'está', 'estamos', 'estáis', 'están', 'esté', 'estés', 'estemos', 'estéis', 'estén', 'estaré', 'estarás', 'estará', 'estaremos', 'estaréis', 'estarán', 'estaría', 'estarías', 'estaríamos', 'estaríais', 'estarían', 'estaba', 'estabas', 'estábamos', 'estabais', 'estaban', 'estuve', 'estuviste', 'estuvo', 'estuvimos', 'estuvisteis', 'estuvieron'
+            ],
+            french: [
+                'le', 'de', 'et', 'à', 'un', 'il', 'être', 'et', 'en', 'avoir', 'que', 'pour', 'dans', 'ce', 'son', 'une', 'sur', 'avec', 'ne', 'se', 'pas', 'tout', 'plus', 'par', 'grand', 'ce', 'le', 'mais', 'que', 'te', 'si', 'peut', 'elle', 'vous', 'ou', 'sa', 'comme', 'moi', 'leur', 'bien', 'très', 'me', 'même', 'y', 'sans', 'pouvoir', 'dire', 'mon', 'lui', 'nous', 'comme', 'après', 'votre', 'tout', 'autre', 'comment', 'son', 'pourquoi', 'demander', 'monsieur', 'là', 'sous', 'gouvernement', 'pendant', 'penser', 'suivre', 'trouver', 'donner', 'depuis', 'côté', 'pouvoir', 'partir', 'place', 'cas', 'entre', 'encore', 'aussi', 'prendre', 'monde', 'temps', 'devoir', 'année', 'work', 'autre', 'jour', 'laisser', 'chose', 'sembler', 'trois', 'heure', 'publique', 'nouveau', 'avoir', 'après', 'vers', 'tout', 'état', 'lors', 'sans', 'faire', 'être', 'avec', 'aller', 'avoir', 'savoir', 'prendre', 'venir', 'voir', 'pouvoir', 'falloir', 'devoir', 'croire', 'trouver', 'donner', 'prendre', 'parler', 'aimer', 'porter', 'laisser', 'entendre', 'demander', 'rester', 'passer', 'vouloir', 'arriver', 'mettre', 'dire', 'rendre', 'devenir', 'tenir', 'créer', 'porter', 'parler', 'montrer', 'continuer', 'penser', 'suivre', 'vivre', 'chercher', 'entrer', 'présenter', 'commencer', 'produire', 'attendre', 'servir', 'sortir', 'ouvrir', 'main', 'écrire', 'guerre', 'compter', 'nouveau', 'côté', 'question', 'moins', 'compte', 'rendre'
+            ],
+            german: [
+                'der', 'die', 'und', 'in', 'den', 'von', 'zu', 'das', 'mit', 'sich', 'des', 'auf', 'für', 'ist', 'im', 'dem', 'nicht', 'ein', 'eine', 'als', 'auch', 'es', 'an', 'werden', 'aus', 'er', 'hat', 'dass', 'sie', 'nach', 'wird', 'bei', 'einer', 'um', 'am', 'sind', 'noch', 'wie', 'einem', 'über', 'einen', 'so', 'zum', 'war', 'haben', 'nur', 'oder', 'aber', 'vor', 'zur', 'bis', 'mehr', 'durch', 'man', 'sein', 'wurde', 'sei', 'in', 'wenn', 'auch', 'ich', 'an', 'der', 'so', 'wir', 'sie', 'aber', 'eine', 'können', 'ein', 'für', 'do', 'with', 'his', 'by', 'word', 'but', 'what', 'some', 'is', 'it', 'you', 'or', 'had', 'the', 'of', 'to', 'and', 'a', 'in', 'we', 'can', 'out', 'other', 'were', 'which', 'their', 'said', 'each', 'she', 'do', 'how', 'their', 'if', 'will', 'up', 'other', 'about', 'out', 'many', 'then', 'them', 'these', 'so', 'some', 'her', 'would', 'make', 'like', 'into', 'him', 'has', 'two', 'more', 'her', 'would', 'make', 'no', 'just', 'first', 'been', 'its', 'who', 'oil', 'sit', 'now', 'find', 'long', 'down', 'day', 'did', 'get', 'come', 'made', 'may', 'part'
+            ],
+            italian: [
+                'il', 'di', 'che', 'e', 'la', 'a', 'un', 'per', 'in', 'con', 'non', 'una', 'su', 'le', 'si', 'da', 'al', 'del', 'lo', 'come', 'ma', 'se', 'ci', 'questo', 'tutto', 'anche', 'o', 'essere', 'fare', 'può', 'quale', 'quando', 'lui', 'dove', 'più', 'dopo', 'molto', 'bene', 'senza', 'altri', 'così', 'già', 'durante', 'suo', 'ora', 'anni', 'ancora', 'stato', 'oggi', 'mai', 'solo', 'nei', 'suoi', 'ogni', 'agli', 'sia', 'stata', 'tra', 'erano', 'dei', 'uomo', 'anni', 'dall', 'esser', 'esse', 'noi', 'loro', 'stata', 'tutte', 'nel', 'cui', 'gli', 'stesso', 'quella', 'della', 'erano', 'dalla', 'parte', 'hanno', 'grande', 'dove', 'proprio', 'erano', 'dire', 'ogni', 'nostro', 'quello', 'paese', 'vita', 'tempo', 'mano', 'oggi', 'maggior', 'sì', 'fino', 'detto', 'ora', 'tanto', 'fatto', 'visto', 'vita', 'lavoro', 'sistema', 'modo', 'lei', 'alcuni', 'qualche', 'cosa', 'subito', 'qui'
+            ],
+            portuguese: [
+                'o', 'de', 'a', 'e', 'que', 'do', 'da', 'em', 'um', 'para', 'é', 'com', 'não', 'uma', 'os', 'no', 'se', 'na', 'por', 'mais', 'as', 'dos', 'como', 'mas', 'foi', 'ao', 'ele', 'das', 'tem', 'à', 'seu', 'sua', 'ou', 'ser', 'quando', 'muito', 'há', 'nos', 'já', 'está', 'eu', 'também', 'só', 'pelo', 'pela', 'até', 'isso', 'ela', 'entre', 'era', 'depois', 'sem', 'mesmo', 'aos', 'ter', 'seus', 'quem', 'nas', 'me', 'esse', 'eles', 'estão', 'você', 'tinha', 'foram', 'essa', 'num', 'nem', 'suas', 'meu', 'às', 'minha', 'têm', 'numa', 'pelos', 'elas', 'havia', 'seja', 'qual', 'será', 'nós', 'tenho', 'lhe', 'deles', 'essas', 'esses', 'pelas', 'este', 'fosse', 'dele', 'tu', 'te', 'vocês', 'vos', 'lhes', 'meus', 'minhas', 'teu', 'tua', 'teus', 'tuas', 'nosso', 'nossa', 'nossos', 'nossas', 'dela', 'delas', 'esta', 'estes', 'estas', 'aquele', 'aquela', 'aqueles', 'aquelas', 'isto', 'aquilo', 'estou', 'está', 'estamos', 'estão', 'estive', 'esteve', 'estivemos', 'estiveram', 'estava', 'estávamos', 'estavam', 'estivera', 'estivéramos', 'esteja', 'estejamos', 'estejam', 'estivesse', 'estivéssemos', 'estivessem', 'estiver', 'estivermos', 'estiverem'
+            ],
+            japanese: [
+                'の', 'に', 'は', 'を', 'た', 'が', 'で', 'て', 'と', 'し', 'れ', 'さ', 'ある', 'いる', 'も', 'する', 'から', 'な', 'こと', 'として', 'い', 'や', 'れる', 'など', 'なっ', 'ない', 'この', 'ため', 'その', 'あっ', 'よう', 'また', 'もの', 'という', 'あり', 'まで', 'られ', 'なる', 'へ', 'か', 'だ', 'これ', 'によって', 'により', 'おり', 'より', 'による', 'ず', 'なり', 'られる', 'において', 'ば', 'なかっ', 'なく', 'しかし', 'について', 'せ', 'だっ', 'その後', 'できる', 'それ', 'う', 'ので', 'なお', 'のみ', 'でき', 'き', 'つ', 'における', 'および', 'いう', 'さらに', 'でも', 'ら', 'たり', 'その他', 'に関して', 'たち', 'ます', 'ん', 'なら', 'に対して', '特に', 'せる', '及び', 'これら', 'とき', 'では', 'にて', 'ほか', 'ながら', 'うち', 'そして', 'とともに', 'ただし', 'かつて', 'それぞれ', 'または', 'お', 'ほど', 'ものの', 'に対する', 'ほとんど', 'と共に', 'といった', 'です', 'とも', 'ところ', 'ここ'
+            ]
+        };
+
+        const advancedWords = [
+            'line', 'kind', 'while', 'quick', 'night', 'you', 'part', 'also', 'any', 'cut', 'both', 'leave', 'put', 'run', 'oil', 'small', 'study', 'more', 'want', 'play', 'down', 'home', 'get', 'before', 'sentence', 'set', 'three', 'become', 'reason', 'many', 'give', 'light', 'years', 'much', 'read', 'along', 'say', 'large', 'often', 'together', 'asked', 'house', 'dont', 'world', 'going', 'want', 'school', 'important', 'until', 'form', 'food', 'keep', 'children', 'feet', 'land', 'side', 'without', 'boy', 'once', 'animal', 'life', 'enough', 'took', 'sometimes', 'four', 'head', 'above', 'kind', 'began', 'almost', 'live', 'page', 'got', 'earth', 'need', 'far', 'hand', 'high', 'year', 'mother', 'light', 'country', 'father', 'let', 'night', 'picture', 'being', 'study', 'second', 'soon', 'story', 'since', 'white', 'ever', 'paper', 'hard', 'near', 'sentence', 'better', 'best', 'across', 'during', 'today', 'however', 'sure', 'knew', 'its', 'try', 'told', 'young', 'sun', 'thing', 'whole', 'hear', 'example', 'heard', 'several', 'change', 'answer', 'room', 'sea', 'against', 'top', 'turned', 'learn', 'point', 'city', 'play', 'toward', 'five', 'himself', 'usually', 'money', 'seen', 'didnt', 'car', 'morning', 'im', 'body', 'upon', 'family', 'later', 'turn', 'move', 'face', 'door', 'cut', 'done', 'group', 'true', 'leave', 'color', 'red', 'friend', 'pretty', 'eat', 'front', 'feel', 'fact', 'hand', 'week', 'eye', 'been', 'word', 'great', 'where', 'help', 'through', 'much', 'before', 'line', 'right', 'too', 'means', 'old', 'any', 'same', 'tell', 'boy', 'follow', 'came', 'want', 'show', 'also', 'around', 'farm', 'three', 'small', 'set', 'put', 'end', 'why', 'asked', 'men', 'read', 'need', 'land', 'different', 'home', 'us', 'move', 'try', 'kind', 'hand', 'picture', 'again', 'change', 'off', 'play', 'spell', 'air', 'away', 'animal', 'house', 'point', 'page', 'letter', 'mother', 'answer', 'found', 'study', 'still', 'learn', 'should', 'America', 'world'
+        ];
+
+        // Sample texts for practice
+        const sampleTexts = {
+            quotes: [
+                "The only way to do great work is to love what you do. If you haven't found it yet, keep looking. Don't settle. As with all matters of the heart, you'll know when you find it.",
+                "Innovation distinguishes between a leader and a follower. Stay hungry, stay foolish.",
+                "Your time is limited, don't waste it living someone else's life. Don't be trapped by dogma, which is living the result of other people's thinking."
+            ],
+            books: [
+                "It was the best of times, it was the worst of times, it was the age of wisdom, it was the age of foolishness, it was the epoch of belief, it was the epoch of incredulity, it was the season of Light, it was the season of Darkness.",
+                "In a hole in the ground there lived a hobbit. Not a nasty, dirty, wet hole, filled with the ends of worms and an oozy smell, nor yet a dry, bare, sandy hole with nothing in it to sit down on or to eat.",
+                "Call me Ishmael. Some years ago—never mind how long precisely—having little or no money in my purse, and nothing particular to interest me on shore, I thought I would sail about a little and see the watery part of the world."
+            ],
+            code: [
+                "function calculateWPM(keystrokes, timeInMinutes) { return Math.round(keystrokes / 5 / timeInMinutes); }",
+                "const users = await fetch('/api/users').then(response => response.json()).catch(error => console.error(error));",
+                "class TypingTest { constructor(words) { this.words = words; this.currentIndex = 0; this.startTime = null; } }"
+            ]
+        };
+
+        // Leaderboard data
+        const leaderboardData = [
+            { rank: 1, username: 'TypeMaster', wpm: 142, accuracy: 98, avatar: 'T', date: '2024-01-15' },
+            { rank: 2, username: 'SpeedDemon', wpm: 138, accuracy: 97, avatar: 'S', date: '2024-01-15' },
+            { rank: 3, username: 'FastFingers', wpm: 135, accuracy: 99, avatar: 'F', date: '2024-01-14' },
+            { rank: 4, username: 'QuickType', wpm: 132, accuracy: 96, avatar: 'Q', date: '2024-01-14' },
+            { rank: 5, username: 'RapidWriter', wpm: 128, accuracy: 98, avatar: 'R', date: '2024-01-13' },
+            { rank: 6, username: 'KeyboardKing', wpm: 125, accuracy: 97, avatar: 'K', date: '2024-01-13' },
+            { rank: 7, username: 'TypingPro', wpm: 122, accuracy: 95, avatar: 'T', date: '2024-01-12' },
+            { rank: 8, username: 'WordWarrior', wpm: 119, accuracy: 94, avatar: 'W', date: '2024-01-12' },
+            { rank: 9, username: 'SwiftTyper', wpm: 116, accuracy: 96, avatar: 'S', date: '2024-01-11' },
+            { rank: 10, username: 'Lightning', wpm: 113, accuracy: 93, avatar: 'L', date: '2024-01-11' },
+            { rank: 11, username: 'FlashFingers', wpm: 110, accuracy: 95, avatar: 'F', date: '2024-01-10' },
+            { rank: 12, username: 'TurboType', wpm: 107, accuracy: 92, avatar: 'T', date: '2024-01-10' }
+        ];
+
+        // Game state
+        let gameState = {
+            currentTest: 'basic',
+            currentLanguage: 'english',
+            words: [],
+            currentWordIndex: 0,
+            currentInput: '',
+            correctWords: 0,
+            wrongWords: 0,
+            totalKeystrokes: 0,
+            correctKeystrokes: 0,
+            startTime: null,
+            timeLeft: 60,
+            gameActive: false,
+            timer: null,
+            customText: '',
+            isLoggedIn: false,
+            currentUser: null
+        };
+
+        // Authentication state
+        let authState = {
+            isLogin: true
+        };
+
+        // Dark mode state
+        let isDarkMode = false;
+
+        // Initialize dark mode from localStorage
+        function initializeDarkMode() {
+            const savedMode = localStorage.getItem('darkMode');
+            if (savedMode === 'true') {
+                enableDarkMode();
+            }
+        }
+
+        // Toggle dark mode
+        function toggleDarkMode() {
+            if (isDarkMode) {
+                disableDarkMode();
+            } else {
+                enableDarkMode();
+            }
+        }
+
+        // Enable dark mode
+        function enableDarkMode() {
+            isDarkMode = true;
+            document.body.classList.remove('light-mode');
+            document.body.classList.add('dark-mode');
+            document.documentElement.classList.add('dark');
+            document.getElementById('darkToggle').classList.add('active');
+            localStorage.setItem('darkMode', 'true');
+        }
+
+        // Disable dark mode
+        function disableDarkMode() {
+            isDarkMode = false;
+            document.body.classList.remove('dark-mode');
+            document.body.classList.add('light-mode');
+            document.documentElement.classList.remove('dark');
+            document.getElementById('darkToggle').classList.remove('active');
+            localStorage.setItem('darkMode', 'false');
+        }
+
+        // Initialize the game after splash screen
+        setTimeout(() => {
+            initializeGame();
+            checkLoginStatus();
+            initializeDarkMode();
+        }, 5000);
+
+        // Check login status from localStorage
+        function checkLoginStatus() {
+            const user = localStorage.getItem('currentUser');
+            if (user) {
+                const userData = JSON.parse(user);
+                gameState.isLoggedIn = true;
+                gameState.currentUser = userData;
+                updateUIForLoggedInUser(userData);
+            }
+        
+        }
+
+        // Update UI for logged in user
+        function updateUIForLoggedInUser(user) {
+            document.getElementById('loginButton').style.display = 'none';
+            document.getElementById('userSection').classList.remove('hidden');
+            document.getElementById('userName').textContent = user.name;
+            document.getElementById('userAvatar').textContent = user.name.charAt(0).toUpperCase();
+        }
+
+        // Initialize the game
+        function initializeGame() {
+            generateWords();
+            displayWords();
+            setupEventListeners();
+        }
+
+        // Generate words based on current test type and language
+        function generateWords() {
+            let wordList = wordLists[gameState.currentLanguage] || wordLists.english;
+            let wordCount = 200;
+            
+            switch(gameState.currentTest) {
+                case 'advanced':
+                    wordList = advancedWords;
+                    wordCount = 300;
+                    break;
+                case 'custom':
+                    if (gameState.customText) {
+                        gameState.words = gameState.customText.split(' ').filter(word => word.length > 0);
+                        return;
+                    }
+                    break;
+                default:
+                    wordList = wordLists[gameState.currentLanguage] || wordLists.english;
+            }
+            
+            gameState.words = [];
+            for (let i = 0; i < wordCount; i++) {
+                const randomIndex = Math.floor(Math.random() * wordList.length);
+                gameState.words.push(wordList[randomIndex]);
+            }
+        }
+
+        // Display words in the typing area
+        function displayWords() {
+            const wordDisplay = document.getElementById('wordDisplay');
+            wordDisplay.innerHTML = '';
+            
+            const wordsToShow = Math.min(50, gameState.words.length);
+            
+            for (let i = 0; i < wordsToShow; i++) {
+                const wordSpan = document.createElement('span');
+                wordSpan.textContent = gameState.words[i];
+                wordSpan.className = 'word';
+                wordSpan.id = `word-${i}`;
+                
+                if (i === gameState.currentWordIndex) {
+                    wordSpan.classList.add('current');
+                }
+                
+                wordDisplay.appendChild(wordSpan);
+            }
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            const typingInput = document.getElementById('typingInput');
+            
+            typingInput.addEventListener('input', handleInput);
+            typingInput.addEventListener('keydown', handleKeyDown);
+            
+            // Focus input when clicking on word display
+            document.getElementById('wordDisplay').addEventListener('click', () => {
+                typingInput.focus();
+            });
+
+            // Auth form toggle
+            document.getElementById('toggleAuth').addEventListener('click', toggleAuthMode);
+            document.getElementById('loginForm').addEventListener('submit', handleAuth);
+        }
+
+        // Handle input
+        function handleInput(event) {
+            const input = event.target.value;
+            
+            if (!gameState.gameActive && input.length > 0) {
+                startTest();
+            }
+            
+            gameState.currentInput = input;
+            gameState.totalKeystrokes++;
+            
+            // Update real-time stats
+            updateRealTimeStats();
+            
+            // Check if word is completed (space pressed)
+            if (input.endsWith(' ')) {
+                processWord(input.trim());
+                event.target.value = '';
+                gameState.currentInput = '';
+            }
+        }
+
+        // Update real-time statistics
+        function updateRealTimeStats() {
+            if (gameState.gameActive) {
+                const currentWPM = calculateWPM();
+                const currentAccuracy = calculateAccuracy();
+                const progress = (gameState.currentWordIndex / Math.min(gameState.words.length, 50)) * 100;
+                
+                document.getElementById('currentWPM').textContent = currentWPM;
+                document.getElementById('currentAccuracy').textContent = currentAccuracy + '%';
+                document.getElementById('wordsTyped').textContent = gameState.correctWords + gameState.wrongWords;
+                document.getElementById('timeRemaining').textContent = gameState.timeLeft;
+                document.getElementById('progressBar').style.width = progress + '%';
+            }
+        }
+
+        // Handle key down events
+        function handleKeyDown(event) {
+            if (event.key === 'Tab') {
+                event.preventDefault();
+                restartTest();
+            }
+        }
+
+        // Process completed word
+        function processWord(typedWord) {
+            const currentWord = gameState.words[gameState.currentWordIndex];
+            const wordElement = document.getElementById(`word-${gameState.currentWordIndex}`);
+            
+            if (typedWord === currentWord) {
+                gameState.correctWords++;
+                gameState.correctKeystrokes += typedWord.length + 1; // +1 for space
+                wordElement.classList.remove('current');
+                wordElement.classList.add('correct');
+            } else {
+                gameState.wrongWords++;
+                wordElement.classList.remove('current');
+                wordElement.classList.add('incorrect');
+            }
+            
+            gameState.currentWordIndex++;
+            
+            // Highlight next word
+            const nextWordElement = document.getElementById(`word-${gameState.currentWordIndex}`);
+            if (nextWordElement) {
+                nextWordElement.classList.add('current');
+            }
+            
+            // Load more words if needed
+            if (gameState.currentWordIndex >= 40) {
+                displayWords();
+            }
+            
+            // End test if all words completed
+            if (gameState.currentWordIndex >= gameState.words.length) {
+                endTest();
+            }
+        }
+
+        // Start the test
+        function startTest() {
+            gameState.gameActive = true;
+            gameState.startTime = Date.now();
+            startTimer();
+        }
+
+        // Start timer
+        function startTimer() {
+            gameState.timer = setInterval(() => {
+                gameState.timeLeft--;
+                updateTimerDisplay();
+                updateRealTimeStats();
+                
+                if (gameState.timeLeft <= 0) {
+                    endTest();
+                }
+            }, 1000);
+        }
+
+        // Update timer display
+        function updateTimerDisplay() {
+            const minutes = Math.floor(gameState.timeLeft / 60);
+            const seconds = gameState.timeLeft % 60;
+            document.getElementById('timer').textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        // End the test
+        function endTest() {
+            gameState.gameActive = false;
+            clearInterval(gameState.timer);
+            
+            document.getElementById('typingInput').disabled = true;
+            showResults();
+            
+            // Save results if logged in
+            if (gameState.isLoggedIn) {
+                saveTestResults();
+            }
+        }
+
+        // Save test results to localStorage
+        function saveTestResults() {
+            const results = {
+                wpm: calculateWPM(),
+                accuracy: calculateAccuracy(),
+                correctWords: gameState.correctWords,
+                wrongWords: gameState.wrongWords,
+                date: new Date().toISOString(),
+                testType: gameState.currentTest,
+                language: gameState.currentLanguage
+            };
+            
+            const existingResults = JSON.parse(localStorage.getItem('testResults') || '[]');
+            existingResults.push(results);
+            localStorage.setItem('testResults', JSON.stringify(existingResults));
+        }
+
+        // Calculate WPM
+        function calculateWPM() {
+            if (!gameState.startTime) return 0;
+            
+            const timeElapsed = (Date.now() - gameState.startTime) / 1000 / 60; // in minutes
+            return Math.round((gameState.correctKeystrokes / 5) / timeElapsed) || 0;
+        }
+
+        // Calculate accuracy
+        function calculateAccuracy() {
+            if (gameState.totalKeystrokes === 0) return 100;
+            return Math.round((gameState.correctKeystrokes / gameState.totalKeystrokes) * 100);
+        }
+
+        // Show results
+        function showResults() {
+            document.getElementById('finalWPM').textContent = calculateWPM();
+            document.getElementById('finalAccuracy').textContent = calculateAccuracy() + '%';
+            document.getElementById('correctWords').textContent = gameState.correctWords;
+            document.getElementById('wrongWords').textContent = gameState.wrongWords;
+            document.getElementById('totalKeystrokes').textContent = gameState.totalKeystrokes;
+            document.getElementById('correctKeystrokes').textContent = gameState.correctKeystrokes;
+            
+            document.getElementById('resultsModal').classList.remove('hidden');
+        }
+
+        // Restart test
+        function restartTest() {
+            // Reset game state
+            gameState.currentWordIndex = 0;
+            gameState.currentInput = '';
+            gameState.correctWords = 0;
+            gameState.wrongWords = 0;
+            gameState.totalKeystrokes = 0;
+            gameState.correctKeystrokes = 0;
+            gameState.startTime = null;
+            gameState.timeLeft = 60;
+            gameState.gameActive = false;
+            
+            if (gameState.timer) {
+                clearInterval(gameState.timer);
+                gameState.timer = null;
+            }
+            
+            // Reset UI
+            document.getElementById('timer').textContent = '1:00';
+            document.getElementById('typingInput').value = '';
+            document.getElementById('typingInput').disabled = false;
+            document.getElementById('typingInput').focus();
+            document.getElementById('resultsModal').classList.add('hidden');
+            document.getElementById('progressBar').style.width = '0%';
+            
+            // Reset real-time stats
+            document.getElementById('currentWPM').textContent = '0';
+            document.getElementById('currentAccuracy').textContent = '100%';
+            document.getElementById('wordsTyped').textContent = '0';
+            document.getElementById('timeRemaining').textContent = '60';
+            
+            // Generate new words and display
+            generateWords();
+            displayWords();
+        }
+
+        // Switch test type
+        function switchTest(testType) {
+            // Update sidebar active state
+            document.querySelectorAll('.sidebar-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            event.target.closest('.sidebar-item').classList.add('active');
+            
+            gameState.currentTest = testType;
+            
+            // Handle different test types
+            switch(testType) {
+                case 'custom':
+                    document.getElementById('customTestModal').classList.remove('hidden');
+                    return;
+                case 'multiplayer':
+                    document.getElementById('multiplayerModal').classList.remove('hidden');
+                    return;
+                case 'competition':
+                    document.getElementById('competitionModal').classList.remove('hidden');
+                    return;
+                case 'practice':
+                    showNotification('Opening Text Practice...');
+                    setTimeout(() => {
+                        document.getElementById('textPracticeModal').classList.remove('hidden');
+                    }, 500);
+                    return;
+                case 'top1000':
+                    showNotification('Top 1000 words feature coming soon!');
+                    return;
+            }
+            
+            restartTest();
+        }
+
+        // Change language
+        function changeLanguage() {
+            const languageSelect = document.getElementById('languageSelect');
+            gameState.currentLanguage = languageSelect.value;
+            restartTest();
+        }
+
+        // Leaderboard functions
+        function showLeaderboard() {
+            document.getElementById('leaderboardModal').classList.remove('hidden');
+            displayLeaderboard('all');
+        }
+
+        function closeLeaderboard() {
+            document.getElementById('leaderboardModal').classList.add('hidden');
+        }
+
+        function filterLeaderboard(filter) {
+            // Update filter button states
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('btn-primary');
+                btn.classList.add('btn-secondary');
+                btn.classList.remove('active');
+            });
+            
+            event.target.classList.remove('btn-secondary');
+            event.target.classList.add('btn-primary');
+            event.target.classList.add('active');
+            
+            displayLeaderboard(filter);
+        }
+
+        function displayLeaderboard(filter) {
+            const leaderboardContent = document.getElementById('leaderboardContent');
+            leaderboardContent.innerHTML = '';
+            
+            // Filter data based on selected filter
+            let filteredData = [...leaderboardData];
+            
+            // For demo purposes, we'll show the same data for all filters
+            // In a real app, you'd filter by actual dates
+            
+            filteredData.forEach(entry => {
+                const entryElement = document.createElement('div');
+                entryElement.className = 'leaderboard-entry';
+                
+                const rankClass = entry.rank === 1 ? 'rank-gold' : entry.rank === 2 ? 'rank-silver' : entry.rank === 3 ? 'rank-bronze' : '';
+                
+                entryElement.innerHTML = `
+                    <div class="leaderboard-rank ${rankClass}">#${entry.rank}</div>
+                    <div class="leaderboard-avatar">${entry.avatar}</div>
+                    <div class="leaderboard-info">
+                
+                        <div class="font-semibold text-text-primary-light dark:text-text-primary-dark">${entry.username}</div>
+                        <div class="text-sm text-text-secondary-light dark:text-text-secondary-dark">
+                            ${entry.date}
+                        </div>
+                    </div>
+                    <div class="leaderboard-stats">
+                        <div class="leaderboard-stat">
+                            <div class="leaderboard-stat-value">${entry.wpm}</div>
+                            <div class="leaderboard-stat-label">WPM</div>
+                        </div>
+                        <div class="leaderboard-stat">
+                            <div class="leaderboard-stat-value">${entry.accuracy}%</div>
+                            <div class="leaderboard-stat-label">ACC</div>
+                        </div>
+                    </div>
+                `;
+                
+                leaderboardContent.appendChild(entryElement);
+            });
+        }
+
+        // Authentication functions
+        function toggleAuthMode() {
+            authState.isLogin = !authState.isLogin;
+            
+            const title = document.getElementById('authTitle');
+            const subtitle = document.getElementById('authSubtitle');
+            const submitBtn = document.getElementById('authSubmitBtn');
+            const toggleBtn = document.getElementById('toggleAuth');
+            const nameField = document.getElementById('nameField');
+            const confirmPasswordField = document.getElementById('confirmPasswordField');
+            
+            if (authState.isLogin) {
+                title.textContent = 'Welcome Back';
+                subtitle.textContent = 'Sign in to track your progress';
+                submitBtn.textContent = 'Sign In';
+                toggleBtn.textContent = 'Create new account';
+                nameField.classList.add('hidden');
+                confirmPasswordField.classList.add('hidden');
+            } else {
+                title.textContent = 'Create Account';
+                subtitle.textContent = 'Join 10FastFingers to track your progress';
+                submitBtn.textContent = 'Create Account';
+                toggleBtn.textContent = 'Already have an account?';
+                nameField.classList.remove('hidden');
+                confirmPasswordField.classList.remove('hidden');
+            }
+        }
+
+        function handleAuth(event) {
+            event.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const fullName = document.getElementById('fullName').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            
+            if (!authState.isLogin) {
+                // Registration validation
+                if (!fullName.trim()) {
+                    showNotification('Please enter your full name', 'error');
+                    return;
+                }
+                if (password !== confirmPassword) {
+                    showNotification('Passwords do not match', 'error');
+                    return;
+                }
+                if (password.length < 6) {
+                    showNotification('Password must be at least 6 characters', 'error');
+                    return;
+                }
+                
+                // Simulate registration
+                const userData = {
+                    name: fullName,
+                    email: email,
+                    joinDate: new Date().toISOString()
+                };
+                
+                localStorage.setItem('currentUser', JSON.stringify(userData));
+                gameState.isLoggedIn = true;
+                gameState.currentUser = userData;
+                
+                showNotification('Account created successfully!');
+                updateUIForLoggedInUser(userData);
+                closeLogin();
+            } else {
+                // Login simulation
+                const userData = {
+                    name: email.split('@')[0],
+                    email: email,
+                    joinDate: new Date().toISOString()
+                };
+                
+                localStorage.setItem('currentUser', JSON.stringify(userData));
+                gameState.isLoggedIn = true;
+                gameState.currentUser = userData;
+                
+                showNotification('Logged in successfully!');
+                updateUIForLoggedInUser(userData);
+                closeLogin();
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('currentUser');
+            gameState.isLoggedIn = false;
+            gameState.currentUser = null;
+            
+            document.getElementById('loginButton').style.display = 'block';
+            document.getElementById('userSection').classList.add('hidden');
+            
+            showNotification('Logged out successfully!');
+        }
+
+        // Show notification
+        function showNotification(message, type = 'success') {
+            const notification = document.getElementById('notification');
+            const notificationText = document.getElementById('notificationText');
+            
+            notificationText.textContent = message;
+            
+            if (type === 'error') {
+                notification.style.background = 'linear-gradient(135deg, #ef4444, #dc2626)';
+            } else {
+                notification.style.background = 'linear-gradient(135deg, #10b981, #059669)';
+            }
+            
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        // Text Practice functions
+        function generateSampleText() {
+            const mode = document.getElementById('practiceMode').value;
+            const difficulty = document.getElementById('practiceDifficulty').value;
+            const textArea = document.getElementById('practiceText');
+            
+            let sampleText = '';
+            
+            if (sampleTexts[mode]) {
+                const texts = sampleTexts[mode];
+                const randomIndex = Math.floor(Math.random() * texts.length);
+                sampleText = texts[randomIndex];
+            } else {
+                // Generate custom text based on difficulty
+                const wordList = wordLists[gameState.currentLanguage] || wordLists.english;
+                const wordCount = difficulty === 'easy' ? 20 : difficulty === 'medium' ? 40 : 60;
+                const words = [];
+                
+                for (let i = 0; i < wordCount; i++) {
+                    const randomIndex = Math.floor(Math.random() * wordList.length);
+                    words.push(wordList[randomIndex]);
+                }
+                
+                sampleText = words.join(' ');
+            }
+            
+            textArea.value = sampleText;
+        }
+
+        function startPracticeTest() {
+            const practiceText = document.getElementById('practiceText').value.trim();
+            if (!practiceText) {
+                showNotification('Please enter some text to practice', 'error');
+                return;
+            }
+            
+            gameState.customText = practiceText;
+            gameState.currentTest = 'custom';
+            
+            // Set time limit
+            const timeLimit = parseInt(document.getElementById('practiceTime').value);
+            if (timeLimit > 0) {
+                gameState.timeLeft = timeLimit;
+            }
+            
+            document.getElementById('textPracticeModal').classList.add('hidden');
+            restartTest();
+            showNotification('Practice test started!');
+        }
+
+        // Multiplayer functions
+        function joinRoom(roomId) {
+            showNotification(`Joining ${roomId} room...`);
+            setTimeout(() => {
+                showNotification('Connected to multiplayer room!');
+                document.getElementById('multiplayerModal').classList.add('hidden');
+                // Start multiplayer test simulation
+                gameState.currentTest = 'multiplayer';
+                restartTest();
+            }, 1500);
+        }
+
+        function createRoom() {
+            const roomName = document.getElementById('roomName').value.trim();
+            if (!roomName) {
+                showNotification('Please enter a room name', 'error');
+                return;
+            }
+            
+            showNotification(`Creating room "${roomName}"...`);
+            setTimeout(() => {
+                showNotification('Room created successfully!');
+                document.getElementById('multiplayerModal').classList.add('hidden');
+                gameState.currentTest = 'multiplayer';
+                restartTest();
+            }, 1500);
+        }
+
+        // Competition functions
+        function joinCompetition() {
+            showNotification('Joining typing competition...');
+            setTimeout(() => {
+                showNotification('Joined competition successfully!');
+                document.getElementById('competitionModal').classList.add('hidden');
+                gameState.currentTest = 'competition';
+                restartTest();
+            }, 1500);
+        }
+
+        function createCompetition() {
+            showNotification('Creating new competition...');
+            setTimeout(() => {
+                showNotification('Competition created successfully!');
+                document.getElementById('competitionModal').classList.add('hidden');
+                gameState.currentTest = 'competition';
+                restartTest();
+            }, 1500);
+        }
+
+        function joinSpecificCompetition(language) {
+            showNotification(`Joining ${language} competition...`);
+            setTimeout(() => {
+                showNotification('Joined competition successfully!');
+                document.getElementById('competitionModal').classList.add('hidden');
+                gameState.currentTest = 'competition';
+                restartTest();
+            }, 1500);
+        }
+
+        // Open external links
+        function openPatreon() {
+            window.open('https://www.patreon.com/10fastfingers', '_blank');
+        }
+
+        function openTextPractice() {
+            document.getElementById('textPracticeModal').classList.remove('hidden');
+        }
+
+        // Custom test functions
+        function startCustomTest() {
+            const customText = document.getElementById('customText').value.trim();
+            if (!customText) {
+                showNotification('Please enter some text for the custom test', 'error');
+                return;
+            }
+            
+            gameState.customText = customText;
+            gameState.currentTest = 'custom';
+            
+            document.getElementById('customTestModal').classList.add('hidden');
+            restartTest();
+            showNotification('Custom test started!');
+        }
+
+        // Share results
+        function shareResults() {
+            const wpm = calculateWPM();
+            const accuracy = calculateAccuracy();
+            const text = `I just scored ${wpm} WPM with ${accuracy}% accuracy on 10FastFingers! 🚀`;
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: '10FastFingers Results',
+                    text: text,
+                    url: window.location.href
+                });
+            } else {
+                navigator.clipboard.writeText(text).then(() => {
+                    showNotification('Results copied to clipboard!');
+                });
+            }
+        }
+
+        // Modal control functions
+        function showLogin() {
+            document.getElementById('loginModal').classList.remove('hidden');
+        }
+
+        function closeLogin() {
+            document.getElementById('loginModal').classList.add('hidden');
+        }
+
+        function showFAQ() {
+            document.getElementById('faqModal').classList.remove('hidden');
+        }
+
+        function closeFAQ() {
+            document.getElementById('faqModal').classList.add('hidden');
+        }
+
+        function showSupporter() {
+            document.getElementById('supporterModal').classList.remove('hidden');
+        }
+
+        function closeSupporter() {
+            document.getElementById('supporterModal').classList.add('hidden');
+        }
+
+        function closeCompetition() {
+            document.getElementById('competitionModal').classList.add('hidden');
+        }
+
+        function closeCustomModal() {
+            document.getElementById('customTestModal').classList.add('hidden');
+        }
+
+        function closeMultiplayerModal() {
+            document.getElementById('multiplayerModal').classList.add('hidden');
+        }
+
+        function closeTextPractice() {
+            document.getElementById('textPracticeModal').classList.add('hidden');
+        }
+
+        // Close modals when clicking outside
+        document.addEventListener('click', function(event) {
+            const modals = ['faqModal', 'supporterModal', 'competitionModal', 'loginModal', 'customTestModal', 'multiplayerModal', 'textPracticeModal', 'resultsModal', 'leaderboardModal'];
+            
+            modals.forEach(modalId => {
+                const modal = document.getElementById(modalId);
+                if (event.target === modal) {
+                    modal.classList.add('hidden');
+                }
+            });
+        });
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                // Close any open modal
+                const modals = ['faqModal', 'supporterModal', 'competitionModal', 'loginModal', 'customTestModal', 'multiplayerModal', 'textPracticeModal', 'resultsModal', 'leaderboardModal'];
+                modals.forEach(modalId => {
+                    document.getElementById(modalId).classList.add('hidden');
+                });
+            }
+        });
+    </script>
+</body>
+</html>
